@@ -1,0 +1,18 @@
+{
+  "name": "mission-5-trademe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "client": "npm run dev --prefix frontend",
+    "server": "npm run dev --prefix backend",
+    "dev": "concurrently \"npm run client\" \"npm run server\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
