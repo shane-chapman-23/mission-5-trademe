@@ -1,10 +1,12 @@
-import "./App.css";
 import Navbar from "./sharedComponents/navBar";
+import { Outlet } from "react-router";
+import "./App.css";
 
 function App() {
   return (
     <>
-      <Navbar></Navbar>
+      <Navbar />
+      <Outlet />
     </>
   );
 }
