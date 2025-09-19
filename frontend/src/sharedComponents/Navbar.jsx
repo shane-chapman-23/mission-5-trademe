@@ -25,10 +25,10 @@ function Navbar() {
                   <input type="text" placeholder="Search all of Trade Me" className=" text-[16px] text-[#5a5653] w-full grow shrink basis-auto" />
                 </div>
               </div>
-              <ul className="flex">
+              <ul className="flex text-[#2f2c28]">
                 <li className="px-[12px] h-[42px] flex flex-col items-center justify-center cursor-pointer">
                   <img src={categories} className="h-[16px] w-[16px]" />
-                  <span className="text-[14px] whitespace-nowrap text-[#2f2c28]">Categories</span>
+                  <span className="text-[14px] whitespace-nowrap ">Categories</span>
                 </li>
                 <li className="px-[12px] h-[42px] flex flex-col items-center justify-center cursor-pointer">
                   <img src={watchList} className="h-[16px] w-[16px]" />
