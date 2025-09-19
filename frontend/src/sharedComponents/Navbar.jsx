@@ -22,7 +22,11 @@ function Navbar() {
               <div className="bg-white h-[40px] w-[514.4px] mr-[8px] px-[14px] rounded-full grow shrink basis-auto cursor-text  ">
                 <div className=" h-full flex items-center">
                   <img src={magnifyingGlass} className="h-[16px] w-[16px] mr-[12px]" />
-                  <input type="text" placeholder="Search all of Trade Me" className=" text-[16px] text-[#5a5653] w-full grow shrink basis-auto" />
+                  <input
+                    type="text"
+                    placeholder="Search all of Trade Me"
+                    className=" text-[16px] text-[#5a5653] w-full grow shrink basis-auto outline-none"
+                  />
                 </div>
               </div>
               <ul className="flex text-[#2f2c28]">
