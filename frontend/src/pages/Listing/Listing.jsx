@@ -25,9 +25,11 @@ function Listing() {
             <div className="h-[48px] flex items-center mb-[8px]">
               <p className="text-[12px] text-[#007acd]">Home / Marketplace / Clothing & Fashion</p>
             </div>
-            <div className="grid gap-4 grid-cols-[2fr_1fr] grid-rows-[auto_auto_auto]">
+            {/* <div className="grid gap-4 grid-cols-[2fr_1fr] grid-rows-[auto_auto_auto]"> */}
+            <div className="flex">
               {/* LEFT COLUMN */}
-              <div className="bg-purple-400 col-start-1 row-start-1">
+              <div className="w-[66.6667%] bg-purple-400">
+                {/* <div className="bg-purple-400 col-start-1 row-start-1"> */}
                 {/* ---------- IMAGES ---------- */}
                 <div className="carousel bg-green-100 h-[50vh] min-h-[400px] max-h-[478px] max-w-[812px]  ">
                   <div id="slide1" className="carousel-item relative w-full">
@@ -92,7 +94,7 @@ function Listing() {
                   </div>
                 </div>
                 {/* IMAGE SELECT */}
-                <div className="bg-green-300 flex w-full mt-[2px] pb-[8px] gap-1">
+                <div className="bg-green-300 flex w-full mt-[2px] pb-[8px] gap-1 mb-6">
                   <a href="#slide1">
                     <img src={boots1s} className="w-[64px] h-[48px] object-cover" />
                   </a>
@@ -106,9 +108,20 @@ function Listing() {
                     <img src={boots4s} className="w-[64px] h-[48px] object-cover" />
                   </a>
                 </div>
+                {/* BODY */}
+                <div className="bg-orange-300 flex flex-col">
+                  {/* DETAILS */}
+                  <div className="flex mb-6">
+                    <h4 className="bg-amber-300 w-[25%] mb-4 text-[#44413d] text-lg font-medium">Details</h4>
+                    <p className="bg-red-200 w-[75%] mb-4">
+                      <span className="font-medium">Condition: </span>Used
+                    </p>
+                  </div>
+                </div>
               </div>
               {/* RIGHT COLUMN - SIDEBAR*/}
-              <div className="bg-yellow-100 col-start-2 row-start-1 row-span-2 ">
+              <div className="w-[33.3334%] bg-yellow-200">
+                {/* <div className="bg-yellow-100 col-start-2 row-start-1 row-span-2 "> */}
                 <h1 className="text-[#44413d] text-3xl leading-10 font-bold mb-4">Dr Martens, Doctor Martens US size 7</h1>
                 <div className="bg-sky-200 mb-4 min-h-[42px] flex text-[#65605d] items-center">
                   <img src={clock} className="mr-2 inline-flex" />
@@ -196,14 +209,14 @@ function Listing() {
                 </div>
               </div>
               {/* LEFT COLUMN - BODY */}
-              <div className="col-start-1 row-start-2">
-                {/* DETAILS SECTION*/}
-                <div className="mb-6 flex">
-                  <h4>Details</h4>
-                </div>
-              </div>
+              {/* <div className="col-start-1 row-start-2"> */}
+              {/* DETAILS SECTION*/}
+              {/* <div className="mb-6 flex"> */}
+              {/* <h4>Details</h4> */}
+              {/* </div> */}
+              {/* </div> */}
               {/* LEFT COLUMN - BODY-SELLER */}
-              <div className="col-start-1 row-start-3"></div>
+              {/* <div className="col-start-1 row-start-3"></div> */}
             </div>
           </div>
         </div>
