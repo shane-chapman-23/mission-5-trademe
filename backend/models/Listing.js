@@ -5,6 +5,9 @@ const listingSchema = new mongoose.Schema({
   description: String,
   start_price: Number,
   reserve_price: Number,
+  buy_now: Number,
+  location: String,
+  shipping_cost: Number,
 });
 
 export default mongoose.model("Listing", listingSchema);
