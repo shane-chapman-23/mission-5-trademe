@@ -4,11 +4,11 @@ import boots2 from "../assets/images/boots2.jpg";
 import boots3 from "../assets/images/boots3.jpg";
 import boots4 from "../assets/images/boots4.jpg";
 
-export default function ListingCard() {
+export default function ListingCard({listing}) {
   return (
     <div className="flex flex-col h-[408px] w-[312px] rounded-md shadow relative">
       {/* Wishlist button */}
-      <button className="absolute top-0 right-0 w-0 h-0 border-l-[40px] border-l-transparent border-b-[40px] border-b-yellow-400 rotate-270 rounded-b">
+      <button className="absolute top-0 right-0 w-0 h-0 border-l-[50px] border-l-transparent border-b-[50px] border-b-yellow-400 rotate-270 rounded-b">
         +
       </button>
       {/* Add to comparison list button */}
@@ -18,7 +18,7 @@ export default function ListingCard() {
         <img src={boots1} className="h-[100%]"></img>
       </div>
       {/* Details */}
-      <div className="h-[30%]">
+      <div className="h-[30%] bg-white">
         <div className="m-2 h-[100%]">
           <div className="flex justify-between">
             <p className="text-gray-500 text-[12px]">Auckland</p>
@@ -27,7 +27,7 @@ export default function ListingCard() {
           <div className="flex h-[75%] justify-between">
             <div>
               <h2 className="text-gray-500 text-[14px] font-bold">
-                Green Lamp
+                {listing.title}
               </h2>
               <p className="text-gray-500 text-[12px]">
                 $10.00 shipping nationwide
@@ -38,7 +38,9 @@ export default function ListingCard() {
             </div>
             <div className="h-100% flex flex-col justify-end">
               <p className="text-gray-500 text-[12px]">Buy Now</p>
-              <p className="text-gray-500 text-[14px] font-bold">$28.00</p>
+              <p className="text-gray-500 text-[14px] font-bold">
+                {`$${Number(listing.start_price).toFixed(2)}`}
+              </p>
             </div>
           </div>
         </div>
