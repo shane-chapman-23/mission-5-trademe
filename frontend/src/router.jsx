@@ -1,7 +1,8 @@
-import { createBrowserRouter } from "react-router";
+import {createBrowserRouter} from "react-router";
 import App from "./App.jsx";
 import Home from "./pages/Home/Home.jsx";
 import Listing from "./pages/Listing/Listing.jsx";
+import Marketplace from "./pages/Marketplace/Marketplace.jsx";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
       {
         path: "listing",
         Component: Listing,
+      },
+      {
+        path: "marketplace",
+        Component: Marketplace,
       },
     ],
   },
