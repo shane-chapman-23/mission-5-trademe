@@ -23,7 +23,7 @@ export default function Marketplace() {
             Home / Marketplace / Computers
           </p>
           <h1 className="text-[#4854D3] text-[36px] font-bold">COMPUTERS</h1>
-          <p className="text-gray-500 text-[14px] mb-[10px] w-[60%]">
+          <p className="text-gray-500 text-sm mb-[10px] w-[60%]">
             Looking to upgrade your software, buy a computer, or simply after
             some cables? Find all your computer needs right here with our huge
             collection of new and second hand computer products and accessories.
