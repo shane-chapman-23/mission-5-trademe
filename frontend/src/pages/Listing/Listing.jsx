@@ -23,7 +23,7 @@ import share from "../../assets/icons/share.svg";
 function Listing() {
   return (
     <>
-      <main className="leading-6 text-[#65605d]">
+      <main className="leading-6 text-[#65605d] ">
         <div className="mr-auto ml-auto px-[140px] max-w-[1600px] flex items-center justify-between">
           <div className="bg-white w-full">
             <div className="h-[48px] flex items-center mb-[8px]">
@@ -122,7 +122,7 @@ function Listing() {
                   {/* DESCRIPTION */}
                   <div className="flex mb-6">
                     <h4 className="w-[25%] mb-4 text-[#44413d] text-lg font-medium">Description</h4>
-                    <p className="w-[75%] mb-4">
+                    <p className="w-[75%] mb-4 ">
                       Excellent condition Apple iPhone 14 Pro Max - 256gb
                       <br />
                       <br />
@@ -191,7 +191,7 @@ function Listing() {
               {/* RIGHT COLUMN - SIDEBAR*/}
               <div className="w-[33.3334%]">
                 {/* <div className="bg-yellow-100 col-start-2 row-start-1 row-span-2 "> */}
-                <h1 className="text-[#44413d] text-3xl leading-10 font-bold mb-4">Dr Martens, Doctor Martens US size 7</h1>
+                <h1 className="text-[#44413d] text-3xl leading-10  font-bold mb-4">Dr Martens, Doctor Martens US size 7</h1>
                 <div className="mb-4 min-h-[42px] flex text-[#65605d] items-center">
                   <img src={clock} className="mr-2 inline-flex" />
                   <div className="grow shrink basis-auto">
