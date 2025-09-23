@@ -17,7 +17,7 @@ function Navbar() {
           <div className="mr-auto ml-auto px-[140px] max-w-[1600px] h-full flex items-center justify-between">
             <div className="flex  w-full  ">
               <div className="mr-[8px] flex items-center">
-                <img src={logo} alt="Trademe Logo" className="w-[190px] h-[25px] cursor-pointer" />
+                <img src={logo} alt="Trademe Logo" className="min-w-[190px] max-h-[25px] cursor-pointer" />
               </div>
               <div className="bg-white h-[40px] w-[514.4px] mr-[8px] px-[14px] rounded-full grow shrink basis-auto cursor-text  ">
                 <div className=" h-full flex items-center">
