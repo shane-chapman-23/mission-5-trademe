@@ -2,9 +2,12 @@ import {useState, useEffect} from "react";
 import ListingCard from "../../sharedComponents/ListingCard";
 
 import searchIcon from "../../assets/icons/magnifyingGlass.svg";
+import boots1 from "../../assets/images/boots1.jpg";
+import ComparisonBox from "../../sharedComponents/ComparisonBox";
 
 export default function Marketplace() {
   const [listings, setListings] = useState([]);
+  const [comparisonList, setComparisonList] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost:5000/listings")
@@ -12,6 +15,17 @@ export default function Marketplace() {
       .then((data) => setListings(data))
       .catch((err) => console.error("Error fetching listings:", err));
   }, []);
+
+  const handleAddToComparison = (listing) => {
+    setComparisonList((prev) => {
+      if (prev.find((item) => item._id === listing._id)) return prev;
+      return [...prev, listing];
+    });
+  };
+
+  const handleRemoveFromComparison = (id) => {
+    setComparisonList((prev) => prev.filter((item) => item._id !== id));
+  };
 
   return (
     <>
@@ -53,10 +67,18 @@ export default function Marketplace() {
       <div className="flex justify-center bg-gray-100 w-[100%] p-5">
         <div className="grid md:grid-cols-4 gap-[20px]">
           {listings.map((listing) => (
-            <ListingCard key={listing._id} listing={listing} />
+            <ListingCard
+              key={listing._id}
+              listing={listing}
+              onAddToComparison={() => handleAddToComparison(listing)}
+            />
           ))}
         </div>
       </div>
+      <ComparisonBox
+        comparisonList={comparisonList}
+        handleRemoveFromComparison={handleRemoveFromComparison}
+      />
     </>
   );
 }
