@@ -2,9 +2,12 @@ import {useState, useEffect} from "react";
 import ListingCard from "../../sharedComponents/ListingCard";
 
 import searchIcon from "../../assets/icons/magnifyingGlass.svg";
+import boots1 from "../../assets/images/boots1.jpg";
+import ComparisonBox from "../../sharedComponents/ComparisonBox";
 
 export default function Marketplace() {
   const [listings, setListings] = useState([]);
+  const [comparisonList, setComparisonList] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost:5000/listings")
@@ -12,6 +15,17 @@ export default function Marketplace() {
       .then((data) => setListings(data))
       .catch((err) => console.error("Error fetching listings:", err));
   }, []);
+
+  const handleAddToComparison = (listing) => {
+    setComparisonList((prev) => {
+      if (prev.find((item) => item._id === listing._id)) return prev;
+      return [...prev, listing];
+    });
+  };
+
+  const handleRemoveFromComparison = (id) => {
+    setComparisonList((prev) => prev.filter((item) => item._id !== id));
+  };
 
   return (
     <>
@@ -23,7 +37,7 @@ export default function Marketplace() {
             Home / Marketplace / Computers
           </p>
           <h1 className="text-[#4854D3] text-[36px] font-bold">COMPUTERS</h1>
-          <p className="text-gray-500 text-[14px] mb-[10px] w-[60%]">
+          <p className="text-gray-500 text-sm mb-[10px] w-[60%]">
             Looking to upgrade your software, buy a computer, or simply after
             some cables? Find all your computer needs right here with our huge
             collection of new and second hand computer products and accessories.
@@ -53,10 +67,18 @@ export default function Marketplace() {
       <div className="flex justify-center bg-gray-100 w-[100%] p-5">
         <div className="grid md:grid-cols-4 gap-[20px]">
           {listings.map((listing) => (
-            <ListingCard key={listing._id} listing={listing} />
+            <ListingCard
+              key={listing._id}
+              listing={listing}
+              onAddToComparison={() => handleAddToComparison(listing)}
+            />
           ))}
         </div>
       </div>
+      <ComparisonBox
+        comparisonList={comparisonList}
+        handleRemoveFromComparison={handleRemoveFromComparison}
+      />
     </>
   );
 }

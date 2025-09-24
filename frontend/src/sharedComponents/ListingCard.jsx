@@ -1,18 +1,30 @@
-import React from "react";
 import boots1 from "../assets/images/boots1.jpg";
-import boots2 from "../assets/images/boots2.jpg";
-import boots3 from "../assets/images/boots3.jpg";
-import boots4 from "../assets/images/boots4.jpg";
 
-export default function ListingCard({listing}) {
+export default function ListingCard({listing, onAddToComparison}) {
   return (
     <div className="flex flex-col h-[408px] w-[312px] rounded-md shadow relative">
       {/* Wishlist button */}
-      <button className="absolute top-0 right-0 w-0 h-0 border-l-[50px] border-l-transparent border-b-[50px] border-b-yellow-400 rotate-270 rounded-b">
-        +
-      </button>
+      <button className="absolute top-0 right-0 w-0 h-0 border-l-[50px] border-l-transparent border-b-[50px] border-b-yellow-400 rotate-270 rounded-b"></button>
       {/* Add to comparison list button */}
-      <button className="absolute top-2 left-2 bg-blue-500 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg"></button>
+      <div className="absolute top-2 left-2">
+        <div className="relative flex items-center">
+          {/* The round button (hover target) */}
+          <button
+            onClick={onAddToComparison}
+            className="bg-blue-500 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg relative z-10 group"
+          >
+            +{/* "Add to comparison" popup */}
+            <span
+              className="absolute left-full ml-2 bg-white text-gray-700 text-sm px-3 py-2 rounded shadow-lg 
+                   opacity-0 translate-x-[-10px] pointer-events-none
+                   group-hover:opacity-100 group-hover:translate-x-0
+                   transition-all duration-200 h-10 flex items-center whitespace-nowrap"
+            >
+              Add to comparison list
+            </span>
+          </button>
+        </div>
+      </div>
       {/* Image */}
       <div className="bg-gray-200 h-[70%] flex justify-center rounded-t">
         <img src={boots1} className="h-[100%]"></img>
