@@ -1,4 +1,4 @@
-import React from "react";
+import axios from "axios";
 import boots1 from "../../assets/images/boots1.jpg";
 import boots2 from "../../assets/images/boots2.jpg";
 import boots3 from "../../assets/images/boots3.jpg";
@@ -20,7 +20,16 @@ import rightArrow from "../../assets/icons/rightArrow.svg";
 import addFav from "../../assets/icons/addFav.svg";
 import share from "../../assets/icons/share.svg";
 
+import { useLocation, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+
 function Listing() {
+  const { state } = useLocation(); // Router state (contains listing if navigated from Marketplace)
+  const [listing] = useState(state?.listing || null);
+  console.log(state);
+
+  if (!listing) return <div className="p-10">Listing not found.</div>;
+
   return (
     <>
       <main className="leading-6 text-[#65605d] ">
@@ -123,13 +132,14 @@ function Listing() {
                   <div className="flex mb-6">
                     <h4 className="w-[25%] mb-4 text-[#44413d] text-lg font-medium">Description</h4>
                     <p className="w-[75%] mb-4 ">
-                      Excellent condition Apple iPhone 14 Pro Max - 256gb
+                      {listing.description.replace(/\n/g, "<br />") || "No description provided."}
+                      {/* Excellent condition Apple iPhone 14 Pro Max - 256gb
                       <br />
                       <br />
                       Fully functional, no scratches and in excellent condition Original Apple branded cable included Original box Apple sticker
                       <br />
                       <br />
-                      https://support.apple.com/en-us/111846
+                      https://support.apple.com/en-us/111846 */}
                     </p>
                   </div>
                   {/* SHIPPING & pick-up options */}
@@ -191,7 +201,7 @@ function Listing() {
               {/* RIGHT COLUMN - SIDEBAR*/}
               <div className="w-[33.3334%]">
                 {/* <div className="bg-yellow-100 col-start-2 row-start-1 row-span-2 "> */}
-                <h1 className="text-[#44413d] text-3xl leading-10  font-bold mb-4">Dr Martens, Doctor Martens US size 7</h1>
+                <h1 className="text-[#44413d] text-3xl leading-10  font-bold mb-4">{listing.title}</h1>
                 <div className="mb-4 min-h-[42px] flex text-[#65605d] items-center">
                   <img src={clock} className="mr-2 inline-flex" />
                   <div className="grow shrink basis-auto">
@@ -211,7 +221,7 @@ function Listing() {
                   <div className="p-4">
                     <p className="text-center">Buy Now</p>
                     <h1 className="text-[32px] text-[#44413d] text-center leading-10 mb-6">
-                      <strong>$1,100</strong>
+                      <strong>${listing.buy_now}</strong>
                     </h1>
                     <button className="btn min-w-8 min-h-8 py-6 px-6 mb-2 rounded-b-sm bg-[#007acd] w-full text-[#fff] text-[16px] border-0 font-medium cursor-pointer">
                       Buy Now
@@ -221,7 +231,7 @@ function Listing() {
                   <div className="p-4">
                     <p className="text-center">Starting Price</p>
                     <h1 className="text-[32px] text-[#44413d] text-center leading-10 mb-6">
-                      <strong>$900</strong>
+                      <strong>${listing.start_price}</strong>
                     </h1>
                     <button className="btn min-w-8 min-h-8 py-6 px-6 mb-6 rounded-b-sm bg-[#007acd] w-full text-[#fff] text-[16px] border-0 font-medium cursor-pointer">
                       Place Bid

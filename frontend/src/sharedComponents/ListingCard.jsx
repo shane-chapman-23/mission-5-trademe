@@ -1,8 +1,15 @@
 import boots1 from "../assets/images/boots1.jpg";
+import { useNavigate } from "react-router-dom";
 
-export default function ListingCard({listing, onAddToComparison}) {
+export default function ListingCard({ listing, onAddToComparison }) {
+  const navigate = useNavigate();
+
+  const openListing = () => {
+    navigate(`/listing/${listing._id}`, { state: { listing } });
+  };
+
   return (
-    <div className="flex flex-col h-[408px] w-[312px] rounded-md shadow relative">
+    <div onClick={openListing} className="flex flex-col h-[408px] w-[312px] rounded-md shadow relative cursor-pointer">
       {/* Wishlist button */}
       <button className="absolute top-0 right-0 w-0 h-0 border-l-[50px] border-l-transparent border-b-[50px] border-b-yellow-400 rotate-270 rounded-b"></button>
       {/* Add to comparison list button */}
@@ -38,21 +45,13 @@ export default function ListingCard({listing, onAddToComparison}) {
           </div>
           <div className="flex h-[75%] justify-between">
             <div>
-              <h2 className="text-gray-500 text-[14px] font-bold">
-                {listing.title}
-              </h2>
-              <p className="text-gray-500 text-[12px]">
-                $10.00 shipping nationwide
-              </p>
-              <p className="text-gray-500 text-[12px]">
-                Expected delivery in 2-3 business days
-              </p>
+              <h2 className="text-gray-500 text-[14px] font-bold">{listing.title}</h2>
+              <p className="text-gray-500 text-[12px]">$10.00 shipping nationwide</p>
+              <p className="text-gray-500 text-[12px]">Expected delivery in 2-3 business days</p>
             </div>
             <div className="h-100% flex flex-col justify-end">
               <p className="text-gray-500 text-[12px]">Buy Now</p>
-              <p className="text-gray-500 text-[14px] font-bold">
-                {`$${Number(listing.start_price).toFixed(2)}`}
-              </p>
+              <p className="text-gray-500 text-[14px] font-bold">{`$${Number(listing.start_price).toFixed(2)}`}</p>
             </div>
           </div>
         </div>
