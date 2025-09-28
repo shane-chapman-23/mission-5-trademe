@@ -20,19 +20,95 @@ import rightArrow from "../../assets/icons/rightArrow.svg";
 import addFav from "../../assets/icons/addFav.svg";
 import share from "../../assets/icons/share.svg";
 
-import { useLocation, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import Joyride from "react-joyride";
+import { useLocation } from "react-router-dom";
+import { useState } from "react";
 
 function Listing() {
   const { state } = useLocation(); // Router state (contains listing if navigated from Marketplace)
-  const [listing] = useState(state?.listing || null);
+  const [listing] = useState(state?.listing);
   console.log(state);
 
-  if (!listing) return <div className="p-10">Listing not found.</div>;
+  // Coachmark variables
+  const [run, setRun] = useState(false);
+  const [showModal, setShowModal] = useState(true);
+  const [highlightListing, setHighlightListing] = useState(false); // added
+
+  const steps = [
+    {
+      target: 'h1[data-tour="listing"]',
+      content: "Look at the photos, read the title and description, check the condition, specs and extras.",
+      disableBeacon: true,
+    },
+    {
+      target: 'div[data-tour="seller"]',
+      content:
+        "Member have feedback ratings, the higher rating the more successfully completed positive trades. The more stars the more trustworthy the seller.",
+    },
+    {
+      target: 'button[data-tour="watchlist"]',
+      content: "Not ready to act? Click Add to Watchlist to save the listing and get updates.",
+    },
+    {
+      target: 'div[data-tour="question"]',
+      content:
+        "Make sure you are have all the information you need before buying. Sellers can answer questions until the listing closes. Its in best interest of seller to provide as much information about their item as possible.",
+    },
+    {
+      target: 'div[data-tour="purchase"]',
+      content:
+        "You’ve got three doors to ownership: Place a Bid – Join the battle and outbid others. Buy Now – Skip the fight, claim it instantly. Make an Offer – Try your luck and see if the seller accepts your deal.",
+    },
+  ];
+
+  const startTour = () => {
+    setShowModal(false);
+    setRun(true);
+  };
 
   return (
     <>
       <main className="leading-6 text-[#65605d] ">
+        <Joyride
+          steps={steps}
+          run={run}
+          continuous
+          showProgress
+          showSkipButton
+          styles={{
+            options: {
+              primaryColor: "#4f46e5",
+              zIndex: 9999,
+            },
+          }}
+          callback={(data) => {
+            const { status, type, index } = data;
+            if (type === "step:before") {
+              setHighlightListing(index === 0); // step 3 (zero-based)
+            }
+            if (type === "tour:end" || ["finished", "skipped"].includes(status)) {
+              setHighlightListing(false);
+              setRun(false);
+            }
+          }}
+        />
+
+        {showModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+            <div className="bg-white rounded-lg shadow-lg max-w-sm w-full p-6">
+              <h2 className="text-xl font-semibold">Welcome 👋</h2>
+              <p className="mt-3 text-sm text-gray-600">You're one step closer to bidding like a pro!</p>
+              <div className="mt-6 flex gap-3 justify-end">
+                <button onClick={() => setShowModal(false)} className="px-4 py-2 text-sm rounded border">
+                  Dismiss
+                </button>
+                <button onClick={startTour} className="px-4 py-2 text-sm rounded bg-indigo-600 text-white">
+                  Begin tutorial
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         <div className="mr-auto ml-auto px-[140px] max-w-[1600px] flex items-center justify-between">
           <div className="bg-white w-full">
             <div className="h-[48px] flex items-center mb-[8px]">
@@ -42,82 +118,84 @@ function Listing() {
               {/* LEFT COLUMN */}
               <div className="w-[66.6667%]">
                 {/* ---------- IMAGES ---------- */}
-                <div className="carousel h-[50vh] min-h-[400px] max-h-[478px] max-w-[812px]  ">
-                  <div id="slide1" className="carousel-item relative w-full">
-                    <img src={boots1} className="w-full object-cover rounded-2xl" />
-                    <div className="absolute left-0 right-0 top-1/2 flex -translate-y-1/2 transform justify-between">
-                      <div className="bg-black/60 text-[#fff] text-[16px] text-center min-w-[32px] min-h-[32px] px-[8px] py-[12px] rounded-r-[3px]">
-                        <a href="#slide4">
-                          <img src={left} alt="" className="" />
-                        </a>
+                <div className={`${highlightListing ? "bg-red-500 text-white rounded-md p-3" : ""}`}>
+                  <div className="carousel h-[50vh] min-h-[400px] max-h-[478px] max-w-[812px]  ">
+                    <div id="slide1" className="carousel-item relative w-full">
+                      <img src={boots1} className="w-full object-cover rounded-2xl" />
+                      <div className="absolute left-0 right-0 top-1/2 flex -translate-y-1/2 transform justify-between">
+                        <div className="bg-black/60 text-[#fff] text-[16px] text-center min-w-[32px] min-h-[32px] px-[8px] py-[12px] rounded-r-[3px]">
+                          <a href="#slide4">
+                            <img src={left} alt="" className="" />
+                          </a>
+                        </div>
+                        <div className="bg-black/60 text-[#fff] text-[16px] text-center min-w-[32px] min-h-[32px] px-[8px] py-[12px] rounded-l-[3px]">
+                          <a href="#slide2">
+                            <img src={right} className="" />
+                          </a>
+                        </div>
                       </div>
-                      <div className="bg-black/60 text-[#fff] text-[16px] text-center min-w-[32px] min-h-[32px] px-[8px] py-[12px] rounded-l-[3px]">
-                        <a href="#slide2">
-                          <img src={right} className="" />
-                        </a>
+                    </div>
+                    <div id="slide2" className="carousel-item relative w-full">
+                      <img src={boots2} className="w-full object-cover rounded-2xl" />
+                      <div className="absolute left-0 right-0 top-1/2 flex -translate-y-1/2 transform justify-between">
+                        <div className="bg-black/60 text-[#fff] text-[16px] text-center min-w-[32px] min-h-[32px] px-[8px] py-[12px] rounded-r-[3px]">
+                          <a href="#slide1">
+                            <img src={left} alt="" className="" />
+                          </a>
+                        </div>
+                        <div className="bg-black/60 text-[#fff] text-[16px] text-center min-w-[32px] min-h-[32px] px-[8px] py-[12px] rounded-l-[3px]">
+                          <a href="#slide3">
+                            <img src={right} className="" />
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="slide3" className="carousel-item relative w-full">
+                      <img src={boots3} className="w-full object-cover rounded-2xl" />
+                      <div className="absolute left-0 right-0 top-1/2 flex -translate-y-1/2 transform justify-between">
+                        <div className="bg-black/60 text-[#fff] text-[16px] text-center min-w-[32px] min-h-[32px] px-[8px] py-[12px] rounded-r-[3px]">
+                          <a href="#slide2">
+                            <img src={left} alt="" className="" />
+                          </a>
+                        </div>
+                        <div className="bg-black/60 text-[#fff] text-[16px] text-center min-w-[32px] min-h-[32px] px-[8px] py-[12px] rounded-l-[3px]">
+                          <a href="#slide4">
+                            <img src={right} className="" />
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="slide4" className="carousel-item relative w-full">
+                      <img src={boots4} className="w-full object-cover rounded-2xl" />
+                      <div className="absolute left-0 right-0 top-1/2 flex -translate-y-1/2 transform justify-between">
+                        <div className="bg-black/60 text-[#fff] text-[16px] text-center min-w-[32px] min-h-[32px] px-[8px] py-[12px] rounded-r-[3px]">
+                          <a href="#slide3">
+                            <img src={left} alt="" className="" />
+                          </a>
+                        </div>
+                        <div className="bg-black/60 text-[#fff] text-[16px] text-center min-w-[32px] min-h-[32px] px-[8px] py-[12px] rounded-l-[3px]">
+                          <a href="#slide1">
+                            <img src={right} className="" />
+                          </a>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div id="slide2" className="carousel-item relative w-full">
-                    <img src={boots2} className="w-full object-cover rounded-2xl" />
-                    <div className="absolute left-0 right-0 top-1/2 flex -translate-y-1/2 transform justify-between">
-                      <div className="bg-black/60 text-[#fff] text-[16px] text-center min-w-[32px] min-h-[32px] px-[8px] py-[12px] rounded-r-[3px]">
-                        <a href="#slide1">
-                          <img src={left} alt="" className="" />
-                        </a>
-                      </div>
-                      <div className="bg-black/60 text-[#fff] text-[16px] text-center min-w-[32px] min-h-[32px] px-[8px] py-[12px] rounded-l-[3px]">
-                        <a href="#slide3">
-                          <img src={right} className="" />
-                        </a>
-                      </div>
-                    </div>
+                  {/* IMAGE SELECT */}
+                  <div className="flex w-full mt-[2px] pb-[8px] gap-1 mb-6">
+                    <a href="#slide1">
+                      <img src={boots1s} className="w-[64px] h-[48px] object-cover" />
+                    </a>
+                    <a href="#slide2">
+                      <img src={boots2s} className="w-[64px] h-[48px] object-cover" />
+                    </a>
+                    <a href="#slide3">
+                      <img src={boots3s} className="w-[64px] h-[48px] object-cover" />
+                    </a>
+                    <a href="#slide4">
+                      <img src={boots4s} className="w-[64px] h-[48px] object-cover" />
+                    </a>
                   </div>
-                  <div id="slide3" className="carousel-item relative w-full">
-                    <img src={boots3} className="w-full object-cover rounded-2xl" />
-                    <div className="absolute left-0 right-0 top-1/2 flex -translate-y-1/2 transform justify-between">
-                      <div className="bg-black/60 text-[#fff] text-[16px] text-center min-w-[32px] min-h-[32px] px-[8px] py-[12px] rounded-r-[3px]">
-                        <a href="#slide2">
-                          <img src={left} alt="" className="" />
-                        </a>
-                      </div>
-                      <div className="bg-black/60 text-[#fff] text-[16px] text-center min-w-[32px] min-h-[32px] px-[8px] py-[12px] rounded-l-[3px]">
-                        <a href="#slide4">
-                          <img src={right} className="" />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <div id="slide4" className="carousel-item relative w-full">
-                    <img src={boots4} className="w-full object-cover rounded-2xl" />
-                    <div className="absolute left-0 right-0 top-1/2 flex -translate-y-1/2 transform justify-between">
-                      <div className="bg-black/60 text-[#fff] text-[16px] text-center min-w-[32px] min-h-[32px] px-[8px] py-[12px] rounded-r-[3px]">
-                        <a href="#slide3">
-                          <img src={left} alt="" className="" />
-                        </a>
-                      </div>
-                      <div className="bg-black/60 text-[#fff] text-[16px] text-center min-w-[32px] min-h-[32px] px-[8px] py-[12px] rounded-l-[3px]">
-                        <a href="#slide1">
-                          <img src={right} className="" />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* IMAGE SELECT */}
-                <div className="flex w-full mt-[2px] pb-[8px] gap-1 mb-6">
-                  <a href="#slide1">
-                    <img src={boots1s} className="w-[64px] h-[48px] object-cover" />
-                  </a>
-                  <a href="#slide2">
-                    <img src={boots2s} className="w-[64px] h-[48px] object-cover" />
-                  </a>
-                  <a href="#slide3">
-                    <img src={boots3s} className="w-[64px] h-[48px] object-cover" />
-                  </a>
-                  <a href="#slide4">
-                    <img src={boots4s} className="w-[64px] h-[48px] object-cover" />
-                  </a>
                 </div>
                 {/* BODY */}
                 <div className="flex flex-col">
@@ -129,7 +207,7 @@ function Listing() {
                     </p>
                   </div>
                   {/* DESCRIPTION */}
-                  <div className="flex mb-6">
+                  <div className={`flex mb-6 ${highlightListing ? "bg-red-500 text-white rounded-md p-3" : ""}`}>
                     <h4 className="w-[25%] mb-4 text-[#44413d] text-lg font-medium">Description</h4>
                     <p className="w-[75%] mb-4 ">
                       {listing.description.replace(/\n/g, "<br />") || "No description provided."}
@@ -187,7 +265,7 @@ function Listing() {
                     </div>
                   </div>
                   {/* QUESTIONS & ANSWERS */}
-                  <div className="flex mb-6">
+                  <div data-tour="question" className="flex mb-6">
                     <h4 className="w-[25%] mb-4 text-[#44413d] text-lg font-medium">Questions & Answers</h4>
                     <div className="w-[75%] ">
                       <p className="mb-2">
@@ -201,7 +279,12 @@ function Listing() {
               {/* RIGHT COLUMN - SIDEBAR*/}
               <div className="w-[33.3334%]">
                 {/* <div className="bg-yellow-100 col-start-2 row-start-1 row-span-2 "> */}
-                <h1 className="text-[#44413d] text-3xl leading-10  font-bold mb-4">{listing.title}</h1>
+                <h1
+                  data-tour="listing"
+                  className={`text-[#44413d] text-3xl leading-10  font-bold mb-4 ${highlightListing ? "bg-red-500 text-white rounded-md p-3" : ""}`}
+                >
+                  {listing.title}
+                </h1>
                 <div className="mb-4 min-h-[42px] flex text-[#65605d] items-center">
                   <img src={clock} className="mr-2 inline-flex" />
                   <div className="grow shrink basis-auto">
@@ -209,7 +292,10 @@ function Listing() {
                     <p className="text-xs leading-4 text-[#76716d]">6 days, 8 hours, 53 minutes</p>
                   </div>
                 </div>
-                <button className="btn min-w-8 min-h-8 py-6 px-6 mb-4 rounded-b-sm bg-[#f9af2c] w-full text-[#943900] text-[16px] border-0 font-medium cursor-pointer">
+                <button
+                  data-tour="watchlist"
+                  className="btn min-w-8 min-h-8 py-6 px-6 mb-4 rounded-b-sm bg-[#f9af2c] w-full text-[#943900] text-[16px] border-0 font-medium cursor-pointer"
+                >
                   <img src={magnet} /> Add to Watchlist
                 </button>
                 <p className="text-sm text-center mb-4 mt-[-8px]">
@@ -217,35 +303,37 @@ function Listing() {
                 </p>
                 {/* PRICES - STARTING / BID / ETC */}
                 <div className="w-full mb-4 border border-[#d7d5d2] rounded-lg shadow-sm">
-                  {/* BUY NOW */}
-                  <div className="p-4">
-                    <p className="text-center">Buy Now</p>
-                    <h1 className="text-[32px] text-[#44413d] text-center leading-10 mb-6">
-                      <strong>${listing.buy_now}</strong>
-                    </h1>
-                    <button className="btn min-w-8 min-h-8 py-6 px-6 mb-2 rounded-b-sm bg-[#007acd] w-full text-[#fff] text-[16px] border-0 font-medium cursor-pointer">
-                      Buy Now
-                    </button>
-                  </div>
-                  {/* STARTING PRICE */}
-                  <div className="p-4">
-                    <p className="text-center">Starting Price</p>
-                    <h1 className="text-[32px] text-[#44413d] text-center leading-10 mb-6">
-                      <strong>${listing.start_price}</strong>
-                    </h1>
-                    <button className="btn min-w-8 min-h-8 py-6 px-6 mb-6 rounded-b-sm bg-[#007acd] w-full text-[#fff] text-[16px] border-0 font-medium cursor-pointer">
-                      Place Bid
-                    </button>
-                    <p className="text-center">Reserve not met</p>
-                    <div className="px-3 py-1.5 text-center text-[#007acd] cursor-pointer">6 bids so far - view history</div>
-                  </div>
-                  {/* MAKE AN OFFER */}
-                  <div className="border-t border-t-[#d7d5d2] p-4 ">
-                    <div className="grid grid-cols-2 py-4 gap-2 items-center">
-                      <p className="text-xs leading-4 ">The seller is open to offers on this listing</p>
-                      <button className="btn bg-[#c4c0bc40] border-0 text-[16px] text-[#007acd] font-medium text-center whitespace-nowrap min-w-8 min-h-8 p-6 w-auto rounded-sm cursor-pointer">
-                        Make an offer
+                  <div data-tour="purchase">
+                    {/* BUY NOW */}
+                    <div className="p-4">
+                      <p className="text-center">Buy Now</p>
+                      <h1 className="text-[32px] text-[#44413d] text-center leading-10 mb-6">
+                        <strong>${listing.buy_now}</strong>
+                      </h1>
+                      <button className="btn min-w-8 min-h-8 py-6 px-6 mb-2 rounded-b-sm bg-[#007acd] w-full text-[#fff] text-[16px] border-0 font-medium cursor-pointer">
+                        Buy Now
                       </button>
+                    </div>
+                    {/* STARTING PRICE */}
+                    <div className="p-4">
+                      <p className="text-center">Starting Price</p>
+                      <h1 className="text-[32px] text-[#44413d] text-center leading-10 mb-6">
+                        <strong>${listing.start_price}</strong>
+                      </h1>
+                      <button className="btn min-w-8 min-h-8 py-6 px-6 mb-6 rounded-b-sm bg-[#007acd] w-full text-[#fff] text-[16px] border-0 font-medium cursor-pointer">
+                        Place Bid
+                      </button>
+                      <p className="text-center">Reserve not met</p>
+                      <div className="px-3 py-1.5 text-center text-[#007acd] cursor-pointer">6 bids so far - view history</div>
+                    </div>
+                    {/* MAKE AN OFFER */}
+                    <div className="border-t border-t-[#d7d5d2] p-4 ">
+                      <div className="grid grid-cols-2 py-4 gap-2 items-center">
+                        <p className="text-xs leading-4 ">The seller is open to offers on this listing</p>
+                        <button className="btn bg-[#c4c0bc40] border-0 text-[16px] text-[#007acd] font-medium text-center whitespace-nowrap min-w-8 min-h-8 p-6 w-auto rounded-sm cursor-pointer">
+                          Make an offer
+                        </button>
+                      </div>
                     </div>
                   </div>
                   {/* SHIPPING BOX */}
@@ -272,7 +360,7 @@ function Listing() {
                   <p className="text-sm text-[#007acd]">Learn more about Buyer Protection</p>
                 </div>
                 {/* SELLER */}
-                <div className="flex mb-6 px-2 py-4 border border-[#d7d5d2] rounded-lg shadow-sm">
+                <div data-tour="seller" className={`flex mb-6 px-2 py-4 border border-[#d7d5d2] rounded-lg shadow-sm `}>
                   <div className="w-15.5 h-15.5 bg-[#ffe8ac] rounded-full text-[31px] text-[#eb9600] flex items-center justify-center">S</div>
                   <div className="ml-4 flex flex-col justify-around ">
                     <p className="text-[#007acd]">

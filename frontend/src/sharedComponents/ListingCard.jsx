@@ -9,7 +9,7 @@ export default function ListingCard({ listing, onAddToComparison }) {
   };
 
   return (
-    <div onClick={openListing} className="flex flex-col h-[408px] w-[312px] rounded-md shadow relative cursor-pointer">
+    <div className="flex flex-col h-[408px] w-[312px] rounded-md shadow relative ">
       {/* Wishlist button */}
       <button className="absolute top-0 right-0 w-0 h-0 border-l-[50px] border-l-transparent border-b-[50px] border-b-yellow-400 rotate-270 rounded-b"></button>
       {/* Add to comparison list button */}
@@ -33,11 +33,11 @@ export default function ListingCard({ listing, onAddToComparison }) {
         </div>
       </div>
       {/* Image */}
-      <div className="bg-gray-200 h-[70%] flex justify-center rounded-t">
+      <div onClick={openListing} className="bg-gray-200 h-[70%] flex justify-center rounded-t cursor-pointer">
         <img src={boots1} className="h-[100%]"></img>
       </div>
       {/* Details */}
-      <div className="h-[30%] bg-white">
+      <div onClick={openListing} className="h-[30%] bg-white cursor-pointer">
         <div className="m-2 h-[100%]">
           <div className="flex justify-between">
             <p className="text-gray-500 text-[12px]">Auckland</p>
