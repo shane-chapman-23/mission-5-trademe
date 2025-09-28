@@ -2,6 +2,8 @@ import {useState, useEffect} from "react";
 import ListingCard from "../../sharedComponents/ListingCard";
 
 import searchIcon from "../../assets/icons/magnifyingGlass.svg";
+import backButton from "../../assets/icons/mobile-back-button.svg";
+import favouritesIcon from "../../assets/icons/favourites-icon.svg";
 import boots1 from "../../assets/images/boots1.jpg";
 import ComparisonBox from "../../sharedComponents/ComparisonBox";
 
@@ -31,19 +33,23 @@ export default function Marketplace() {
     <>
       {/* Header */}
 
-      <div className="flex justify-center bg-white h-[300px] pt-[10px]">
-        <div className="w-[68%]">
-          <p className="text-[12px] text-[#007acd]">
+      <div className="flex justify-center bg-white h-auto p-[10px]">
+        <div className="flex space-x-14">
+          {/* <p className="text-[12px] text-[#007acd]">
             Home / Marketplace / Computers
-          </p>
-          <h1 className="text-[#4854D3] text-[36px] font-bold">COMPUTERS</h1>
+          </p> */}
+          {/* <h1 className="text-[#4854D3] text-[36px] font-bold">COMPUTERS</h1>
           <p className="text-gray-500 text-sm mb-[10px] w-[60%]">
             Looking to upgrade your software, buy a computer, or simply after
             some cables? Find all your computer needs right here with our huge
             collection of new and second hand computer products and accessories.
             Look through the listings below or check out our categories to find
             your perfect solution.
-          </p>
+          </p> */}
+          {/* Back Button */}
+          <button>
+            <img src={backButton}></img>
+          </button>
           <div className="relative">
             {/* Search Icon */}
             <img
@@ -56,16 +62,34 @@ export default function Marketplace() {
               <input
                 type="text"
                 placeholder="Search within Computers"
-                className="w-full border border-gray-300 rounded pl-10 py-1 placeholder-gray-400 placeholder:text-[14px] text-gray-500"
+                className="w-full border border-gray-300 rounded-xl pl-8 py-1 placeholder-gray-400 placeholder:text-[14px] text-black"
               ></input>
             </form>
-            {/* Filters */}
           </div>
+          {/* Favourites Button */}
+          <button>
+            <img src={favouritesIcon}></img>
+          </button>
         </div>
       </div>
+      {/* Filters */}
+      <div className="flex">
+        <button className="w-[73px] h-[24px] bg-blue-500 rounded-2xl"></button>
+      </div>
       {/* listing display */}
-      <div className="flex justify-center bg-gray-100 w-[100%] p-5">
+      {/* <div className="flex justify-center bg-gray-100 w-[100%] p-5">
         <div className="grid md:grid-cols-4 gap-[20px]">
+          {listings.map((listing) => (
+            <ListingCard
+              key={listing._id}
+              listing={listing}
+              onAddToComparison={() => handleAddToComparison(listing)}
+            />
+          ))}
+        </div>
+      </div> */}
+      <div className="bg-gray-300 w-[100%] p-5">
+        <div>
           {listings.map((listing) => (
             <ListingCard
               key={listing._id}

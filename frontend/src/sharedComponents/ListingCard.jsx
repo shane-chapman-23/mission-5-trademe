@@ -7,21 +7,25 @@ export default function ListingCard({listing, onAddToComparison}) {
       <button className="absolute top-0 right-0 w-0 h-0 border-l-[50px] border-l-transparent border-b-[50px] border-b-yellow-400 rotate-270 rounded-b"></button>
       {/* Add to comparison list button */}
       <div className="absolute top-2 left-2">
-        <div className="relative flex items-center">
+        <div className="relative flex items-center group">
+          {/* Expanding background */}
+          <span
+            className="absolute left-0 bg-white text-gray-700 text-sm overflow-hidden 
+                 flex items-center justify-center px-0 w-[45px] h-[45px] 
+                 rounded-full shadow-lg z-0 transition-all duration-300
+                 group-hover:w-[200px] group-hover:rounded-full group-hover:px-6"
+          >
+            <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap text-center text-[14px] font-bold w-full pl-7">
+              Add to Comparisons
+            </span>
+          </span>
+
           {/* The round button (hover target) */}
           <button
             onClick={onAddToComparison}
-            className="bg-blue-500 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg relative z-10 group"
+            className="bg-blue-500 text-white text-[40px] w-[45px] h-[45px] rounded-full flex items-center justify-center shadow-lg relative z-10 cursor-pointer font-sans"
           >
-            +{/* "Add to comparison" popup */}
-            <span
-              className="absolute left-full ml-2 bg-white text-gray-700 text-sm px-3 py-2 rounded shadow-lg 
-                   opacity-0 translate-x-[-10px] pointer-events-none
-                   group-hover:opacity-100 group-hover:translate-x-0
-                   transition-all duration-200 h-10 flex items-center whitespace-nowrap"
-            >
-              Add to comparison list
-            </span>
+            <span className="relative -top-1">+</span>
           </button>
         </div>
       </div>
