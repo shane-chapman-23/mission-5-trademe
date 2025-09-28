@@ -29,6 +29,9 @@ function Listing() {
   const [listing] = useState(state?.listing);
   console.log(state);
 
+  // Place Bid Modal
+  const [showBidModal, setShowBidModal] = useState(false);
+
   // Coachmark variables
   const [run, setRun] = useState(false);
   const [showModal, setShowModal] = useState(true);
@@ -42,6 +45,7 @@ function Listing() {
     },
     {
       target: 'div[data-tour="seller"]',
+      placement: "left",
       content:
         "Member have feedback ratings, the higher rating the more successfully completed positive trades. The more stars the more trustworthy the seller.",
     },
@@ -51,11 +55,13 @@ function Listing() {
     },
     {
       target: 'div[data-tour="question"]',
+      placement: "top",
       content:
         "Make sure you are have all the information you need before buying. Sellers can answer questions until the listing closes. Its in best interest of seller to provide as much information about their item as possible.",
     },
     {
       target: 'div[data-tour="purchase"]',
+      placement: "left-start",
       content:
         "You’ve got three doors to ownership: Place a Bid – Join the battle and outbid others. Buy Now – Skip the fight, claim it instantly. Make an Offer – Try your luck and see if the seller accepts your deal.",
     },
@@ -96,7 +102,7 @@ function Listing() {
         {showModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
             <div className="bg-white rounded-lg shadow-lg max-w-sm w-full p-6">
-              <h2 className="text-xl font-semibold">Welcome 👋</h2>
+              <h2 className="text-xl font-semibold">Welcome!</h2>
               <p className="mt-3 text-sm text-gray-600">You're one step closer to bidding like a pro!</p>
               <div className="mt-6 flex gap-3 justify-end">
                 <button onClick={() => setShowModal(false)} className="px-4 py-2 text-sm rounded border">
@@ -109,6 +115,67 @@ function Listing() {
             </div>
           </div>
         )}
+
+        {showBidModal && (
+          <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/40">
+            <div className=" w-full max-w-[784px] rounded-2xl max-h-[80vh] bg-white ">
+              {/* Modal Header */}
+              <div className="max-w-full basis-auto flex relative">
+                <h2 className="pl-10 pt-4 pr-16 pb-4 text-[#44413d] text-2xl leading-8 font-bold">Place a bid</h2>
+                <div onClick={() => setShowBidModal(false)} className="absolute top-2 right-2 w-auto px-2 py-3 bg-transparent cursor-pointer">
+                  <svg
+                    className="fill-[#007acd] inline-flex"
+                    aria-label="Close dialog window"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    height="24"
+                    width="24"
+                    focusable="false"
+                    role="img"
+                    class="o-svg--scale-to-fill"
+                  >
+                    <path d="M4.293 19.707a1 1 0 0 0 1.414 0L12 13.414l6.293 6.293a1 1 0 0 0 1.414-1.414L13.414 12l6.293-6.293a1 1 0 0 0-1.414-1.414L12 10.586 5.707 4.293a1 1 0 0 0-1.414 1.414L10.586 12l-6.293 6.293a1 1 0 0 0 0 1.414z"></path>
+                  </svg>
+                </div>
+              </div>
+              {/* Modal Body */}
+              <div className="px-6 pb-4 ">
+                <div className="w-full h-full mb-6 bg-[#f6f5f4] flex">
+                  <img src={boots1} className="w-[192px] h-[144px] object-cover" />
+                  <div className="flex flex-col p-3">
+                    <div className="flex text-[#76716d] text-xs leading-4">
+                      <div className="pr-2 mr-2 mb-2 border-r border-[#d7d5d2]">Auckland City, Auckland</div>
+                      <div className="mb-2">Closes:Sun, 5 Oct</div>
+                    </div>
+                    <div className="text-sm text-[#44413d] font-medium leading-4">{listing.title}</div>
+                    <div className="mt-auto flex flex-col">
+                      <div className="mt-2 text-[#76716d] text-xs leading-none">No reserve</div>
+                      <div className="text-[#44413d] font-medium leading-5">${listing.start_price}</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-wrap mb-2">
+                  <div className="w-1/2 pr-3 mb-6">
+                    <div className="pr-4 mb-2 font-medium">Your bid</div>
+                    <input
+                      type="text"
+                      placeholder={`$${listing.start_price}`}
+                      className="h-12 w-full border border-[#d7d5d2] px-4 rounded-sm text-[#44413d] cursor-text "
+                    />
+                  </div>
+                  <div className="w-1/2 pt-8 pl-3 flex">
+                    <div className="py-3 flex">
+                      <input type="checkbox" className="toggle border-gray-400  text-[#65605d]" />
+                      <div className="pl-4">Auto-bid</div>
+                    </div>
+                    <div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="mr-auto ml-auto px-[140px] max-w-[1600px] flex items-center justify-between">
           <div className="bg-white w-full">
             <div className="h-[48px] flex items-center mb-[8px]">
@@ -320,7 +387,10 @@ function Listing() {
                       <h1 className="text-[32px] text-[#44413d] text-center leading-10 mb-6">
                         <strong>${listing.start_price}</strong>
                       </h1>
-                      <button className="btn min-w-8 min-h-8 py-6 px-6 mb-6 rounded-b-sm bg-[#007acd] w-full text-[#fff] text-[16px] border-0 font-medium cursor-pointer">
+                      <button
+                        onClick={() => setShowBidModal(true)}
+                        className="btn min-w-8 min-h-8 py-6 px-6 mb-6 rounded-b-sm bg-[#007acd] w-full text-[#fff] text-[16px] border-0 font-medium cursor-pointer"
+                      >
                         Place Bid
                       </button>
                       <p className="text-center">Reserve not met</p>
