@@ -22,7 +22,7 @@ import share from "../../assets/icons/share.svg";
 
 import Joyride from "react-joyride";
 import { useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Listing() {
   const { state } = useLocation(); // Router state (contains listing if navigated from Marketplace)
@@ -31,10 +31,10 @@ function Listing() {
 
   // Place Bid Modal
   const [showBidModal, setShowBidModal] = useState(false);
+  const [showModal, setShowModal] = useState(true);
 
   // Coachmark variables
   const [run, setRun] = useState(false);
-  const [showModal, setShowModal] = useState(true);
   const [highlightListing, setHighlightListing] = useState(false); // added
 
   const steps = [
@@ -65,12 +65,38 @@ function Listing() {
       content:
         "You’ve got three doors to ownership: Place a Bid – Join the battle and outbid others. Buy Now – Skip the fight, claim it instantly. Make an Offer – Try your luck and see if the seller accepts your deal.",
     },
+    {
+      target: 'button[data-tour="bid"]',
+      placement: "left",
+      content: "Click here to place a bid",
+    },
+    {
+      target: 'button[data-tour="bid"]',
+      placement: "left",
+      content: "Click here to place a bid",
+    },
   ];
 
   const startTour = () => {
     setShowModal(false);
     setRun(true);
   };
+
+  // Add this useEffect to manage body scrolling
+  useEffect(() => {
+    // If any modal is open, disable scrolling on the body
+    if (showModal || showBidModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      // Restore scrolling when all modals are closed
+      document.body.style.overflow = "auto";
+    }
+
+    // Cleanup function to ensure scrolling is restored when component unmounts
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [showModal, showBidModal]); // Re-run effect when modal states change
 
   return (
     <>
@@ -90,7 +116,7 @@ function Listing() {
           callback={(data) => {
             const { status, type, index } = data;
             if (type === "step:before") {
-              setHighlightListing(index === 0); // step 3 (zero-based)
+              setHighlightListing(index === 0);
             }
             if (type === "tour:end" || ["finished", "skipped"].includes(status)) {
               setHighlightListing(false);
@@ -100,7 +126,7 @@ function Listing() {
         />
 
         {showModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
             <div className="bg-white rounded-lg shadow-lg max-w-sm w-full p-6">
               <h2 className="text-xl font-semibold">Welcome!</h2>
               <p className="mt-3 text-sm text-gray-600">You're one step closer to bidding like a pro!</p>
@@ -117,8 +143,8 @@ function Listing() {
         )}
 
         {showBidModal && (
-          <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/40">
-            <div className=" w-full max-w-[784px] rounded-2xl max-h-[80vh] bg-white ">
+          <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/80">
+            <div className=" w-full max-w-[784px] rounded-2xl max-h-[86vh] bg-white ">
               {/* Modal Header */}
               <div className="max-w-full basis-auto flex relative">
                 <h2 className="pl-10 pt-4 pr-16 pb-4 text-[#44413d] text-2xl leading-8 font-bold">Place a bid</h2>
@@ -168,9 +194,46 @@ function Listing() {
                       <input type="checkbox" className="toggle border-gray-400  text-[#65605d]" />
                       <div className="pl-4">Auto-bid</div>
                     </div>
-                    <div></div>
+                  </div>
+                  {/* Shipping */}
+                  <div className="mb-4">
+                    <div className="mb-2 font-medium ">Shipping</div>
+                    <div className="flex py-3 pl-3">
+                      <input type="radio" className="radio cursor-pointer" />
+                      <div className="pl-3">I will arrange shipping with the seller</div>
+                    </div>
+                    <div className="flex py-3 pl-3">
+                      <input type="radio" className="radio cursor-pointer" />
+                      <div className="pl-3">
+                        <div>I will arrange shipping with the seller</div>
+                        <div className="text-[#76716d] text-xs leading-4">Seller is located in Auckland City, Auckland</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
+                {/* Payment */}
+                <div>
+                  <p className="mb-2 font-medium">Seller accepts payment by</p>
+                  <p>Ping, Cash, NZ Bank Deposit</p>
+                  <p className="mb-4 text-xs leading-5">If you win, you are legally obligated to complete your purchase</p>
+                </div>
+                {/* Reminders */}
+                <div className="pt-2 mb-4">
+                  <p className="mb-2 font-medium">Reminders</p>
+                  <div className="flex mb-4 py-3 pl-3">
+                    <input type="checkbox" className="checkbox cursor-pointer" />
+                    <div className="pl-3">Email me if I'm outbid</div>
+                  </div>
+                </div>
+              </div>
+              {/* Modal Footer */}
+              <div className="px-6 pb-6">
+                <button className="btn min-w-8 min-h-8 py-6 px-6 mb-6 rounded-b-sm bg-[#007acd] w-auto text-[#fff] text-base border-0 font-medium cursor-pointer">
+                  Place Bid
+                </button>
+                <button className="btn min-w-8 min-h-8 py-6 px-6 mb-6 bg-transparent w-auto text-[#007acd] text-base border-0 font-normal cursor-pointer">
+                  Go back to listing
+                </button>
               </div>
             </div>
           </div>
@@ -388,6 +451,7 @@ function Listing() {
                         <strong>${listing.start_price}</strong>
                       </h1>
                       <button
+                        data-tour="bid"
                         onClick={() => setShowBidModal(true)}
                         className="btn min-w-8 min-h-8 py-6 px-6 mb-6 rounded-b-sm bg-[#007acd] w-full text-[#fff] text-[16px] border-0 font-medium cursor-pointer"
                       >
