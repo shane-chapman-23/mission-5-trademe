@@ -36,6 +36,7 @@ function Listing() {
   // Coachmark variables
   const [run, setRun] = useState(false);
   const [highlightListing, setHighlightListing] = useState(false); // added
+  const [stepIndex, setStepIndex] = useState(0); // Add stepIndex state
 
   const steps = [
     {
@@ -69,11 +70,22 @@ function Listing() {
       target: 'button[data-tour="bid"]',
       placement: "left",
       content: "Click here to place a bid",
+      spotlightClicks: true,
     },
     {
-      target: 'button[data-tour="bid"]',
+      target: 'div[data-tour="enterBid"]',
       placement: "left",
       content: "Click here to place a bid",
+    },
+    {
+      target: 'div[data-tour="currentBid"]',
+      placement: "left",
+      content: "When you have placed your bid, It should say here that you are leading the bid. ",
+    },
+    {
+      target: "body",
+      placement: "center",
+      content: "Congrats",
     },
   ];
 
@@ -107,6 +119,7 @@ function Listing() {
           continuous
           showProgress
           showSkipButton
+          stepIndex={stepIndex} // Add this prop
           styles={{
             options: {
               primaryColor: "#4f46e5",
@@ -114,13 +127,48 @@ function Listing() {
             },
           }}
           callback={(data) => {
-            const { status, type, index } = data;
+            const { status, type, index, action } = data;
+
             if (type === "step:before") {
               setHighlightListing(index === 0);
+
+              if (index === 5) {
+                setShowBidModal(false);
+              }
             }
-            if (type === "tour:end" || ["finished", "skipped"].includes(status)) {
+
+            // Handle normal step progression
+            if (type === "step:after") {
+              // For normal steps, just advance to the next index
+              if (index !== 5) {
+                setStepIndex(index + 1);
+              }
+              // Special handling for step 6 (index 5)
+              else {
+                // After clicking the bid button in step 6
+                setShowBidModal(true);
+
+                // Stop the tour temporarily
+                setRun(false);
+
+                // Give modal time to render, then advance to step 7
+                setTimeout(() => {
+                  setStepIndex(6); // Set to step 7 (index 6)
+                  setRun(true); // Restart the tour
+                }, 600);
+              }
+            }
+
+            if (["finished", "skipped"].includes(status)) {
               setHighlightListing(false);
+              setShowBidModal(false);
               setRun(false);
+              setStepIndex(0); // Reset index
+            }
+
+            // Close modal after completing step 8
+            if (index === 7) {
+              setShowBidModal(false);
             }
           }}
         />
@@ -181,7 +229,7 @@ function Listing() {
                   </div>
                 </div>
                 <div className="flex flex-wrap mb-2">
-                  <div className="w-1/2 pr-3 mb-6">
+                  <div data-tour="enterBid" className="w-1/2 pr-3 mb-6">
                     <div className="pr-4 mb-2 font-medium">Your bid</div>
                     <input
                       type="text"
@@ -446,10 +494,12 @@ function Listing() {
                     </div>
                     {/* STARTING PRICE */}
                     <div className="p-4">
-                      <p className="text-center">Starting Price</p>
-                      <h1 className="text-[32px] text-[#44413d] text-center leading-10 mb-6">
-                        <strong>${listing.start_price}</strong>
-                      </h1>
+                      <div data-tour="currentBid">
+                        <p className="text-center">Starting Price</p>
+                        <h1 className="text-[32px] text-[#44413d] text-center leading-10 mb-6">
+                          <strong>${listing.start_price}</strong>
+                        </h1>
+                      </div>
                       <button
                         data-tour="bid"
                         onClick={() => setShowBidModal(true)}
