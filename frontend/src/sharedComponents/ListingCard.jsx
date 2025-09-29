@@ -1,8 +1,16 @@
+import {useNavigate} from "react-router-dom";
+
 import boots1 from "../assets/images/boots1.jpg";
 
 export default function ListingCard({listing, onAddToComparison}) {
+  const navigate = useNavigate();
+
+  const openListing = () => {
+    navigate(`/listing/${listing._id}`, {state: {listing}});
+  };
+
   return (
-    <div className="flex flex-col h-[408px] w-[312px] rounded-md shadow relative">
+    <div className="flex flex-col h-[408px] w-[312px] rounded-md shadow relative ">
       {/* Wishlist button */}
       <button className="absolute top-0 right-0 w-0 h-0 border-l-[50px] border-l-transparent border-b-[50px] border-b-yellow-400 rotate-270 rounded-b"></button>
       {/* Add to comparison list button */}
@@ -11,53 +19,68 @@ export default function ListingCard({listing, onAddToComparison}) {
           {/* Expanding background */}
           <span
             className="absolute left-0 bg-white text-gray-700 text-sm overflow-hidden 
-                 flex items-center justify-center px-0 w-[45px] h-[45px] 
+                 flex items-center justify-center px-0 w-[46px] h-[33px] 
                  rounded-full shadow-lg z-0 transition-all duration-300
                  group-hover:w-[200px] group-hover:rounded-full group-hover:px-6"
           >
-            <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap text-center text-[14px] font-bold w-full pl-7">
-              Add to Comparisons
+            <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap text-center text-[14px] font-bold w-full  pl-7">
+              add to comparison
             </span>
           </span>
 
           {/* The round button (hover target) */}
           <button
             onClick={onAddToComparison}
-            className="bg-blue-500 text-white text-[40px] w-[45px] h-[45px] rounded-full flex items-center justify-center shadow-lg relative z-10 cursor-pointer font-sans"
+            className="bg-blue-500 text-white text-[40px] w-[46px] h-[46px] rounded-full flex items-center justify-center shadow-lg relative z-10 cursor-pointer font-sans"
           >
             <span className="relative -top-1">+</span>
           </button>
         </div>
       </div>
       {/* Image */}
-      <div className="bg-gray-200 h-[70%] flex justify-center rounded-t">
+      <div
+        onClick={openListing}
+        className="bg-gray-200 h-[70%] flex justify-center rounded-t cursor-pointer"
+      >
         <img src={boots1} className="h-[100%]"></img>
       </div>
       {/* Details */}
-      <div className="h-[30%] bg-white">
+      <div onClick={openListing} className="h-[30%] bg-white cursor-pointer">
         <div className="m-2 h-[100%]">
           <div className="flex justify-between">
-            <p className="text-gray-500 text-[12px]">Auckland</p>
-            <p className="text-gray-500 text-[12px]">closes: Thu, 25 sep</p>
+            <p className="text-[#646464] text-[8px]">Auckland</p>
+            <p className="text-[#646464] text-[8px]">closes: Thu, 25 sep</p>
           </div>
-          <div className="flex h-[75%] justify-between">
+          <div className="flex  justify-between my-3">
             <div>
-              <h2 className="text-gray-500 text-[14px] font-bold">
+              <h2 className="text-black text-[12px] font-bold">
                 {listing.title}
               </h2>
-              <p className="text-gray-500 text-[12px]">
+              <p className="text-gray-500 text-[8px]">
                 $10.00 shipping nationwide
               </p>
-              <p className="text-gray-500 text-[12px]">
+              <p className="text-gray-500 text-[8px]">
                 Expected delivery in 2-3 business days
               </p>
             </div>
-            <div className="h-100% flex flex-col justify-end">
-              <p className="text-gray-500 text-[12px]">Buy Now</p>
-              <p className="text-gray-500 text-[14px] font-bold">
-                {`$${Number(listing.start_price).toFixed(2)}`}
-              </p>
+          </div>
+          <div className="flex justify-between">
+            {/* current bid */}
+            <div>
+              <p className="text-gray-500 text-[8px]">No reserve</p>
+              <p className="text-black text-[10px] font-bold">{`$${Number(
+                listing.start_price
+              ).toFixed(2)}`}</p>
             </div>
+            {/* buy now price */}
+            {listing.buy_now && (
+              <div className="h-100% flex flex-col justify-end text-right">
+                <p className="text-gray-500 text-[8px]">Buy Now</p>
+                <p className="text-black text-[10px] font-bold">{`$${Number(
+                  listing.buy_now
+                ).toFixed(2)}`}</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -1,14 +1,14 @@
 import Navbar from "./sharedComponents/navBar";
 import Footer from "./sharedComponents/Footer";
-import {Outlet} from "react-router";
+import {Outlet} from "react-router-dom";
 import "./App.css";
 
 function App() {
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
       <Outlet />
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 }
