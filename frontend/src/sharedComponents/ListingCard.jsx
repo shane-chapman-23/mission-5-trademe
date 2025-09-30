@@ -1,5 +1,3 @@
-import {useNavigate} from "react-router-dom";
-
 import boots1 from "../assets/images/boots1.jpg";
 import { useNavigate } from "react-router-dom";
 
@@ -9,7 +7,6 @@ export default function ListingCard({ listing, onAddToComparison }) {
   const openListing = () => {
     navigate(`/listing/${listing._id}`, { state: { listing } });
   };
-
 
   return (
     <div className="flex flex-col h-[408px] w-[312px] rounded-md shadow relative ">
@@ -42,7 +39,6 @@ export default function ListingCard({ listing, onAddToComparison }) {
       {/* Image */}
 
       <div onClick={openListing} className="bg-gray-200 h-[70%] flex justify-center rounded-t cursor-pointer">
-
         <img src={boots1} className="h-[100%]"></img>
       </div>
       {/* Details */}
@@ -54,7 +50,6 @@ export default function ListingCard({ listing, onAddToComparison }) {
           </div>
           <div className="flex  justify-between my-3">
             <div>
-
               <h2 className="text-gray-500 text-[14px] font-bold">{listing.title}</h2>
               <p className="text-gray-500 text-[12px]">$10.00 shipping nationwide</p>
               <p className="text-gray-500 text-[12px]">Expected delivery in 2-3 business days</p>
@@ -62,15 +57,12 @@ export default function ListingCard({ listing, onAddToComparison }) {
             <div className="h-100% flex flex-col justify-end">
               <p className="text-gray-500 text-[12px]">Buy Now</p>
               <p className="text-gray-500 text-[14px] font-bold">{`$${Number(listing.start_price).toFixed(2)}`}</p>
-
             </div>
             {/* buy now price */}
             {listing.buy_now && (
               <div className="h-100% flex flex-col justify-end text-right">
                 <p className="text-gray-500 text-[8px]">Buy Now</p>
-                <p className="text-black text-[10px] font-bold">{`$${Number(
-                  listing.buy_now
-                ).toFixed(2)}`}</p>
+                <p className="text-black text-[10px] font-bold">{`$${Number(listing.buy_now).toFixed(2)}`}</p>
               </div>
             )}
           </div>

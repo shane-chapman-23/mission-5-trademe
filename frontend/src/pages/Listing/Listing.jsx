@@ -41,51 +41,73 @@ function Listing() {
   const steps = [
     {
       target: 'h1[data-tour="listing"]',
-      content: "Look at the photos, read the title and description, check the condition, specs and extras.",
+      content: (
+        <div>
+          <h4 className="font-extrabold text-left">Step 1: View the listing</h4>
+          <br />
+          <p className="text-left">Look at the photos, read the title and description, check the condition, specs and extras.</p>
+        </div>
+      ),
       disableBeacon: true,
+      showSkipButton: false,
     },
     {
       target: 'div[data-tour="seller"]',
       placement: "left",
       content:
         "Member have feedback ratings, the higher rating the more successfully completed positive trades. The more stars the more trustworthy the seller.",
+      showSkipButton: false,
+      hideBackButton: true,
     },
     {
       target: 'button[data-tour="watchlist"]',
       content: "Not ready to act? Click Add to Watchlist to save the listing and get updates.",
+      showSkipButton: false,
+      hideBackButton: true,
     },
     {
       target: 'div[data-tour="question"]',
       placement: "top",
       content:
         "Make sure you are have all the information you need before buying. Sellers can answer questions until the listing closes. Its in best interest of seller to provide as much information about their item as possible.",
+      showSkipButton: false,
+      hideBackButton: true,
     },
     {
       target: 'div[data-tour="purchase"]',
       placement: "left-start",
       content:
         "You’ve got three doors to ownership: Place a Bid – Join the battle and outbid others. Buy Now – Skip the fight, claim it instantly. Make an Offer – Try your luck and see if the seller accepts your deal.",
+      showSkipButton: false,
+      hideBackButton: true,
     },
     {
       target: 'button[data-tour="bid"]',
       placement: "left",
       content: "Click here to place a bid",
-      spotlightClicks: true,
+      // spotlightClicks: true,
+      showSkipButton: false,
+      hideBackButton: true,
     },
     {
       target: 'div[data-tour="enterBid"]',
       placement: "left",
       content: "Click here to place a bid",
+      showSkipButton: false,
+      hideBackButton: true,
     },
     {
       target: 'div[data-tour="currentBid"]',
       placement: "left",
       content: "When you have placed your bid, It should say here that you are leading the bid. ",
+      showSkipButton: false,
+      hideBackButton: true,
     },
     {
       target: "body",
       placement: "center",
       content: "Congrats",
+      hideBackButton: true,
     },
   ];
 
@@ -120,10 +142,45 @@ function Listing() {
           showProgress
           showSkipButton
           stepIndex={stepIndex} // Add this prop
+          locale={{
+            nextLabelWithProgress: "Next",
+          }}
           styles={{
             options: {
               primaryColor: "#4f46e5",
               zIndex: 9999,
+            },
+            tooltip: {
+              borderRadius: 6,
+              width: "380px",
+              // height: "274px",
+            },
+            tooltipContent: {
+              padding: "12px",
+              color: "#000000",
+            },
+            tooltipFooter: {
+              // alignItems: "center",
+              display: "flex",
+              justifyContent: "center",
+              marginTop: 15,
+            },
+            tooltipFooterSpacer: {
+              flex: 0,
+            },
+            buttonNext: {
+              backgroundColor: "#FFC041",
+              color: "#A8520C",
+              fontSize: "12px",
+              fontWeight: "400",
+              padding: "10px",
+              borderRadius: "5px",
+              border: "none",
+              width: "112.84px",
+              // height: "21.36px",
+              alignItems: "center",
+              top: "224px",
+              marginTop: "30px",
             },
           }}
           callback={(data) => {
