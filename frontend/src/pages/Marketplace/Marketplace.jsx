@@ -1,21 +1,51 @@
 import {useState, useEffect} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
 import ListingCard from "../../sharedComponents/ListingCard";
-
-import searchIcon from "../../assets/icons/magnifyingGlass.svg";
-import backButton from "../../assets/icons/mobile-back-button.svg";
-import favouritesIcon from "../../assets/icons/favourites-icon.svg";
 import ComparisonBox from "../../sharedComponents/ComparisonBox";
+
+//images
+import searchIcon from "../../assets/icons/magnifyingGlass.svg";
+import saveIcon from "../../assets/icons/save-icon.svg";
 
 export default function Marketplace() {
   const [listings, setListings] = useState([]);
   const [comparisonList, setComparisonList] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // pull query param from URL
   useEffect(() => {
-    fetch("http://localhost:5000/listings")
-      .then((res) => res.json())
-      .then((data) => setListings(data))
-      .catch((err) => console.error("Error fetching listings:", err));
-  }, []);
+    const params = new URLSearchParams(location.search);
+    const q = params.get("search") || "";
+    setSearchQuery(q);
+
+    const fetchListings = async () => {
+      try {
+        const url = q
+          ? `http://localhost:5000/listings/search?q=${encodeURIComponent(q)}`
+          : "http://localhost:5000/listings";
+
+        const res = await fetch(url);
+        const data = await res.json();
+        setListings(data);
+      } catch (err) {
+        console.error("Error fetching listings:", err);
+      }
+    };
+
+    fetchListings();
+  }, [location.search]); // run every time URL changes
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    navigate(
+      searchQuery.trim()
+        ? `/marketplace?search=${encodeURIComponent(searchQuery)}`
+        : "/marketplace"
+    );
+  };
 
   const handleAddToComparison = (listing) => {
     setComparisonList((prev) => {
@@ -31,7 +61,6 @@ export default function Marketplace() {
   return (
     <>
       {/* Header */}
-
       <div className="flex flex-col  mx-auto max-w-[1440px] items-center bg-white h-[420px] p-[10px]">
         <div className="flex flex-col w-[83%] justify-center mt-10 mb-2">
           {/* Path */}
@@ -53,14 +82,21 @@ export default function Marketplace() {
               className="absolute left-2 top-1/2 transform -translate-y-1/2 h-5 w-5"
             />
             {/* Search Bar */}
-            <form className="">
+            <form onSubmit={handleSearch}>
               <input
                 type="text"
-                placeholder="Jeans"
+                placeholder={searchQuery}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-[811px] h-[61px] border border-gray-300 rounded-sm pl-8 placeholder:text-[15px] placeholder:text-black text-black"
               ></input>
             </form>
-            <button className="w-[230px] h-[61px] bg-[#F0EFEE] text-[15px] text-black font-bold">
+            <button className="flex justify-center items-center pr-4 gap-2 w-[230px] h-[61px] bg-[#F0EFEE] text-[15px] text-black font-bold">
+              <img
+                src={saveIcon}
+                alt="save icon"
+                className="w-[20px] h-[20px]"
+              />
               save this search
             </button>
           </div>
@@ -102,18 +138,6 @@ export default function Marketplace() {
           </div>
         </div>
       </div>
-
-      {/* <div className="bg-gray-300 w-[100%] p-5">
-        <div>
-          {listings.map((listing) => (
-            <ListingCard
-              key={listing._id}
-              listing={listing}
-              onAddToComparison={() => handleAddToComparison(listing)}
-            />
-          ))}
-        </div>
-      </div> */}
       <ComparisonBox
         comparisonList={comparisonList}
         handleRemoveFromComparison={handleRemoveFromComparison}

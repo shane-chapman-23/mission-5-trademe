@@ -1,6 +1,7 @@
 import {useNavigate} from "react-router-dom";
 
 import boots1 from "../assets/images/boots1.jpg";
+// import wishlistIcon from "../assets/icons/";
 
 export default function ListingCard({listing, onAddToComparison}) {
   const navigate = useNavigate();
@@ -12,9 +13,11 @@ export default function ListingCard({listing, onAddToComparison}) {
   return (
     <div className="flex flex-col h-[408px] w-[350px] rounded-lg shadow-lg relative ">
       {/* Wishlist button */}
-      <button className="absolute top-0 right-0 w-0 h-0 border-l-[50px] border-l-transparent border-b-[50px] border-b-yellow-400 rotate-270 rounded-b"></button>
+      <button className="absolute top-0 right-0 w-[0] h-0 border-l-[60px] border-l-transparent border-b-[60px] border-b-yellow-400 rotate-270 rounded-b">
+        <img />
+      </button>
       {/* Add to comparison list button */}
-      <div className="absolute top-2 left-2">
+      <div className="absolute top-3 left-3">
         <div className="relative flex items-center group">
           {/* Expanding background */}
           <span
@@ -31,7 +34,7 @@ export default function ListingCard({listing, onAddToComparison}) {
           {/* The round button (hover target) */}
           <button
             onClick={onAddToComparison}
-            className="bg-blue-500 text-white text-[50px] w-[35px] h-[35px] rounded-full flex items-center justify-center shadow-lg relative z-10 cursor-pointer font-sans"
+            className="bg-[#3479C7] text-white text-[50px] w-[35px] h-[35px] rounded-full flex items-center justify-center shadow-lg relative z-10 cursor-pointer font-sans"
           >
             <span className="relative -top-1.5">+</span>
           </button>
