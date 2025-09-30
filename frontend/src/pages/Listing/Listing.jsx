@@ -22,7 +22,7 @@ import share from "../../assets/icons/share.svg";
 
 import Joyride from "react-joyride";
 import { useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Listing() {
   const { state } = useLocation(); // Router state (contains listing if navigated from Marketplace)
@@ -31,39 +31,83 @@ function Listing() {
 
   // Place Bid Modal
   const [showBidModal, setShowBidModal] = useState(false);
+  const [showModal, setShowModal] = useState(true);
 
   // Coachmark variables
   const [run, setRun] = useState(false);
-  const [showModal, setShowModal] = useState(true);
   const [highlightListing, setHighlightListing] = useState(false); // added
+  const [stepIndex, setStepIndex] = useState(0); // Add stepIndex state
 
   const steps = [
     {
       target: 'h1[data-tour="listing"]',
-      content: "Look at the photos, read the title and description, check the condition, specs and extras.",
+      content: (
+        <div>
+          <h4 className="font-extrabold text-left">Step 1: View the listing</h4>
+          <br />
+          <p className="text-left">Look at the photos, read the title and description, check the condition, specs and extras.</p>
+        </div>
+      ),
       disableBeacon: true,
+      showSkipButton: false,
     },
     {
       target: 'div[data-tour="seller"]',
       placement: "left",
       content:
         "Member have feedback ratings, the higher rating the more successfully completed positive trades. The more stars the more trustworthy the seller.",
+      showSkipButton: false,
+      hideBackButton: true,
     },
     {
       target: 'button[data-tour="watchlist"]',
       content: "Not ready to act? Click Add to Watchlist to save the listing and get updates.",
+      showSkipButton: false,
+      hideBackButton: true,
     },
     {
       target: 'div[data-tour="question"]',
       placement: "top",
       content:
         "Make sure you are have all the information you need before buying. Sellers can answer questions until the listing closes. Its in best interest of seller to provide as much information about their item as possible.",
+      showSkipButton: false,
+      hideBackButton: true,
     },
     {
       target: 'div[data-tour="purchase"]',
       placement: "left-start",
       content:
         "You’ve got three doors to ownership: Place a Bid – Join the battle and outbid others. Buy Now – Skip the fight, claim it instantly. Make an Offer – Try your luck and see if the seller accepts your deal.",
+      showSkipButton: false,
+      hideBackButton: true,
+    },
+    {
+      target: 'button[data-tour="bid"]',
+      placement: "left",
+      content: "Click here to place a bid",
+      // spotlightClicks: true,
+      showSkipButton: false,
+      hideBackButton: true,
+    },
+    {
+      target: 'div[data-tour="enterBid"]',
+      placement: "left",
+      content: "Click here to place a bid",
+      showSkipButton: false,
+      hideBackButton: true,
+    },
+    {
+      target: 'div[data-tour="currentBid"]',
+      placement: "left",
+      content: "When you have placed your bid, It should say here that you are leading the bid. ",
+      showSkipButton: false,
+      hideBackButton: true,
+    },
+    {
+      target: "body",
+      placement: "center",
+      content: "Congrats",
+      hideBackButton: true,
     },
   ];
 
@@ -71,6 +115,22 @@ function Listing() {
     setShowModal(false);
     setRun(true);
   };
+
+  // Add this useEffect to manage body scrolling
+  useEffect(() => {
+    // If any modal is open, disable scrolling on the body
+    if (showModal || showBidModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      // Restore scrolling when all modals are closed
+      document.body.style.overflow = "auto";
+    }
+
+    // Cleanup function to ensure scrolling is restored when component unmounts
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [showModal, showBidModal]); // Re-run effect when modal states change
 
   return (
     <>
@@ -81,26 +141,97 @@ function Listing() {
           continuous
           showProgress
           showSkipButton
+          stepIndex={stepIndex} // Add this prop
+          locale={{
+            nextLabelWithProgress: "Next",
+          }}
           styles={{
             options: {
               primaryColor: "#4f46e5",
               zIndex: 9999,
             },
+            tooltip: {
+              borderRadius: 6,
+              width: "380px",
+              // height: "274px",
+            },
+            tooltipContent: {
+              padding: "12px",
+              color: "#000000",
+            },
+            tooltipFooter: {
+              // alignItems: "center",
+              display: "flex",
+              justifyContent: "center",
+              marginTop: 15,
+            },
+            tooltipFooterSpacer: {
+              flex: 0,
+            },
+            buttonNext: {
+              backgroundColor: "#FFC041",
+              color: "#A8520C",
+              fontSize: "12px",
+              fontWeight: "400",
+              padding: "10px",
+              borderRadius: "5px",
+              border: "none",
+              width: "112.84px",
+              // height: "21.36px",
+              alignItems: "center",
+              top: "224px",
+              marginTop: "30px",
+            },
           }}
           callback={(data) => {
-            const { status, type, index } = data;
+            const { status, type, index, action } = data;
+
             if (type === "step:before") {
-              setHighlightListing(index === 0); // step 3 (zero-based)
+              setHighlightListing(index === 0);
+
+              if (index === 5) {
+                setShowBidModal(false);
+              }
             }
-            if (type === "tour:end" || ["finished", "skipped"].includes(status)) {
+
+            // Handle normal step progression
+            if (type === "step:after") {
+              // For normal steps, just advance to the next index
+              if (index !== 5) {
+                setStepIndex(index + 1);
+              }
+              // Special handling for step 6 (index 5)
+              else {
+                // After clicking the bid button in step 6
+                setShowBidModal(true);
+
+                // Stop the tour temporarily
+                setRun(false);
+
+                // Give modal time to render, then advance to step 7
+                setTimeout(() => {
+                  setStepIndex(6); // Set to step 7 (index 6)
+                  setRun(true); // Restart the tour
+                }, 600);
+              }
+            }
+
+            if (["finished", "skipped"].includes(status)) {
               setHighlightListing(false);
+              setShowBidModal(false);
               setRun(false);
+              setStepIndex(0); // Reset index
+            }
+
+            // Close modal after completing step 8
+            if (index === 7) {
+              setShowBidModal(false);
             }
           }}
         />
 
         {showModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
             <div className="bg-white rounded-lg shadow-lg max-w-sm w-full p-6">
               <h2 className="text-xl font-semibold">Welcome!</h2>
               <p className="mt-3 text-sm text-gray-600">You're one step closer to bidding like a pro!</p>
@@ -117,8 +248,8 @@ function Listing() {
         )}
 
         {showBidModal && (
-          <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/40">
-            <div className=" w-full max-w-[784px] rounded-2xl max-h-[80vh] bg-white ">
+          <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/80">
+            <div className=" w-full max-w-[784px] rounded-2xl max-h-[86vh] bg-white ">
               {/* Modal Header */}
               <div className="max-w-full basis-auto flex relative">
                 <h2 className="pl-10 pt-4 pr-16 pb-4 text-[#44413d] text-2xl leading-8 font-bold">Place a bid</h2>
@@ -155,7 +286,7 @@ function Listing() {
                   </div>
                 </div>
                 <div className="flex flex-wrap mb-2">
-                  <div className="w-1/2 pr-3 mb-6">
+                  <div data-tour="enterBid" className="w-1/2 pr-3 mb-6">
                     <div className="pr-4 mb-2 font-medium">Your bid</div>
                     <input
                       type="text"
@@ -168,9 +299,46 @@ function Listing() {
                       <input type="checkbox" className="toggle border-gray-400  text-[#65605d]" />
                       <div className="pl-4">Auto-bid</div>
                     </div>
-                    <div></div>
+                  </div>
+                  {/* Shipping */}
+                  <div className="mb-4">
+                    <div className="mb-2 font-medium ">Shipping</div>
+                    <div className="flex py-3 pl-3">
+                      <input type="radio" className="radio cursor-pointer" />
+                      <div className="pl-3">I will arrange shipping with the seller</div>
+                    </div>
+                    <div className="flex py-3 pl-3">
+                      <input type="radio" className="radio cursor-pointer" />
+                      <div className="pl-3">
+                        <div>I will arrange shipping with the seller</div>
+                        <div className="text-[#76716d] text-xs leading-4">Seller is located in Auckland City, Auckland</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
+                {/* Payment */}
+                <div>
+                  <p className="mb-2 font-medium">Seller accepts payment by</p>
+                  <p>Ping, Cash, NZ Bank Deposit</p>
+                  <p className="mb-4 text-xs leading-5">If you win, you are legally obligated to complete your purchase</p>
+                </div>
+                {/* Reminders */}
+                <div className="pt-2 mb-4">
+                  <p className="mb-2 font-medium">Reminders</p>
+                  <div className="flex mb-4 py-3 pl-3">
+                    <input type="checkbox" className="checkbox cursor-pointer" />
+                    <div className="pl-3">Email me if I'm outbid</div>
+                  </div>
+                </div>
+              </div>
+              {/* Modal Footer */}
+              <div className="px-6 pb-6">
+                <button className="btn min-w-8 min-h-8 py-6 px-6 mb-6 rounded-b-sm bg-[#007acd] w-auto text-[#fff] text-base border-0 font-medium cursor-pointer">
+                  Place Bid
+                </button>
+                <button className="btn min-w-8 min-h-8 py-6 px-6 mb-6 bg-transparent w-auto text-[#007acd] text-base border-0 font-normal cursor-pointer">
+                  Go back to listing
+                </button>
               </div>
             </div>
           </div>
@@ -383,11 +551,14 @@ function Listing() {
                     </div>
                     {/* STARTING PRICE */}
                     <div className="p-4">
-                      <p className="text-center">Starting Price</p>
-                      <h1 className="text-[32px] text-[#44413d] text-center leading-10 mb-6">
-                        <strong>${listing.start_price}</strong>
-                      </h1>
+                      <div data-tour="currentBid">
+                        <p className="text-center">Starting Price</p>
+                        <h1 className="text-[32px] text-[#44413d] text-center leading-10 mb-6">
+                          <strong>${listing.start_price}</strong>
+                        </h1>
+                      </div>
                       <button
+                        data-tour="bid"
                         onClick={() => setShowBidModal(true)}
                         className="btn min-w-8 min-h-8 py-6 px-6 mb-6 rounded-b-sm bg-[#007acd] w-full text-[#fff] text-[16px] border-0 font-medium cursor-pointer"
                       >
