@@ -2,13 +2,12 @@ import {useState, useEffect} from "react";
 import ListingCard from "../../sharedComponents/ListingCard";
 
 import searchIcon from "../../assets/icons/magnifyingGlass.svg";
-import backButton from "../../assets/icons/mobile-back-button.svg";
-import favouritesIcon from "../../assets/icons/favourites-icon.svg";
 import ComparisonBox from "../../sharedComponents/ComparisonBox";
 
 export default function Marketplace() {
   const [listings, setListings] = useState([]);
   const [comparisonList, setComparisonList] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:5000/listings")
@@ -16,6 +15,29 @@ export default function Marketplace() {
       .then((data) => setListings(data))
       .catch((err) => console.error("Error fetching listings:", err));
   }, []);
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    try {
+      if (!searchQuery.trim()) {
+        // if input empty, get all listings again
+        const res = await fetch("http://localhost:5000/listings");
+        const data = await res.json();
+        setListings(data);
+        return;
+      }
+
+      const res = await fetch(
+        `http://localhost:5000/listings/search?q=${encodeURIComponent(
+          searchQuery
+        )}`
+      );
+      const data = await res.json();
+      setListings(data);
+    } catch (err) {
+      console.error("Error searching listings:", err);
+    }
+  };
 
   const handleAddToComparison = (listing) => {
     setComparisonList((prev) => {
@@ -53,10 +75,12 @@ export default function Marketplace() {
               className="absolute left-2 top-1/2 transform -translate-y-1/2 h-5 w-5"
             />
             {/* Search Bar */}
-            <form className="">
+            <form onSubmit={handleSearch}>
               <input
                 type="text"
-                placeholder="Jeans"
+                placeholder={searchQuery}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-[811px] h-[61px] border border-gray-300 rounded-sm pl-8 placeholder:text-[15px] placeholder:text-black text-black"
               ></input>
             </form>
@@ -102,18 +126,6 @@ export default function Marketplace() {
           </div>
         </div>
       </div>
-
-      {/* <div className="bg-gray-300 w-[100%] p-5">
-        <div>
-          {listings.map((listing) => (
-            <ListingCard
-              key={listing._id}
-              listing={listing}
-              onAddToComparison={() => handleAddToComparison(listing)}
-            />
-          ))}
-        </div>
-      </div> */}
       <ComparisonBox
         comparisonList={comparisonList}
         handleRemoveFromComparison={handleRemoveFromComparison}
