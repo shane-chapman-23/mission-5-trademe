@@ -32,7 +32,7 @@ export default function Marketplace() {
     <>
       {/* Header */}
 
-      <div className="flex flex-col  mx-auto max-w-[1600px] items-center bg-white h-[420px] p-[10px]">
+      <div className="flex flex-col  mx-auto max-w-[1440px] items-center bg-white h-[420px] p-[10px]">
         <div className="flex flex-col w-[83%] justify-center mt-10 mb-2">
           {/* Path */}
           <p className="text-[12px] text-[#007acd]">
@@ -91,7 +91,7 @@ export default function Marketplace() {
       {/* listing display */}
       <div className="flex justify-center mx-auto items-center bg-white max-w-[1600px] p-[10px]">
         <div>
-          <div className="grid grid-cols-4 gap-7 mx-auto">
+          <div className="grid grid-cols-3 gap-16 mx-auto">
             {listings.map((listing) => (
               <ListingCard
                 key={listing._id}

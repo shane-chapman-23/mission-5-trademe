@@ -2,6 +2,8 @@ import {useState} from "react";
 import boots1 from "../assets/images/boots1.jpg";
 import expandButton from "../assets/icons/expand-button.svg";
 import collapseButton from "../assets/icons/collapse-button.svg";
+import upArrow from "../assets/icons/up-arrow-white.svg";
+import downArrow from "../assets/icons/down-arrow-white.svg";
 
 export default function ComparisonBox({
   comparisonList,
@@ -12,12 +14,12 @@ export default function ComparisonBox({
 
   return (
     <div
-      className={`fixed bottom-4 right-4 bg-white shadow-lg ${
-        isExpanded ? "w-[700px] h-[410px] " : "w-[372px] h-auto"
+      className={`fixed bottom-4 right-4 bg-white shadow-lg z-50 ${
+        isExpanded ? "w-[700px] h-[420px] " : "w-[372px] h-auto"
       }`}
     >
       {/* Expand/Collapse Button (top-left corner) */}
-      {isOpen && (
+      {isOpen && comparisonList.length > 0 && (
         <button
           onClick={() => setIsExpanded(!isExpanded)}
           className="absolute top-2 left-2 z-10 cursor-pointer"
@@ -44,18 +46,18 @@ export default function ComparisonBox({
             }
           }}
         >
-          {isOpen ? "^" : "v"}
+          {isOpen ? (
+            <img src={upArrow} alt="up arrow" />
+          ) : (
+            <img src={downArrow} alt="down arrow" />
+          )}
         </span>
       </div>
 
       {/* Content (collapsible) */}
       {isOpen && comparisonList.length > 0 && (
         <div
-          className={`${
-            isExpanded
-              ? "h-[340px] overflow-y-auto overflow-x-hidden scrollbar-hide" // fixed height + vertical scroll
-              : "h-auto"
-          }`}
+          className={`${isExpanded ? "h-[350px] overflow-y-auto" : "h-auto"}`}
         >
           {/* Expanded grid view */}
           {isExpanded ? (
@@ -89,10 +91,11 @@ export default function ComparisonBox({
                           <span className="font-bold">
                             Current highest bid:{" "}
                           </span>
-                          ${item.price || "11"}
+                          ${item.current_bid || "11"}
                         </p>
                         <p className=" text-[10px]">
-                          <span className="font-bold ">Buy now: </span> $50
+                          <span className="font-bold ">Buy now: </span> $
+                          {item.buy_now || "50"}
                         </p>
                         <p className=" text-[10px]">
                           <span className="font-bold">Shipping:</span> Pick up
