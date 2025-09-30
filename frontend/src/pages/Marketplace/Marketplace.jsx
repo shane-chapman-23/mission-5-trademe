@@ -1,42 +1,50 @@
 import {useState, useEffect} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
 import ListingCard from "../../sharedComponents/ListingCard";
-
-import searchIcon from "../../assets/icons/magnifyingGlass.svg";
 import ComparisonBox from "../../sharedComponents/ComparisonBox";
+
+//images
+import searchIcon from "../../assets/icons/magnifyingGlass.svg";
+import saveIcon from "../../assets/icons/save-icon.svg";
 
 export default function Marketplace() {
   const [listings, setListings] = useState([]);
   const [comparisonList, setComparisonList] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  useEffect(() => {
-    fetch("http://localhost:5000/listings")
-      .then((res) => res.json())
-      .then((data) => setListings(data))
-      .catch((err) => console.error("Error fetching listings:", err));
-  }, []);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    try {
-      if (!searchQuery.trim()) {
-        // if input empty, get all listings again
-        const res = await fetch("http://localhost:5000/listings");
+  // pull query param from URL
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const q = params.get("search") || "";
+    setSearchQuery(q);
+
+    const fetchListings = async () => {
+      try {
+        const url = q
+          ? `http://localhost:5000/listings/search?q=${encodeURIComponent(q)}`
+          : "http://localhost:5000/listings";
+
+        const res = await fetch(url);
         const data = await res.json();
         setListings(data);
-        return;
+      } catch (err) {
+        console.error("Error fetching listings:", err);
       }
+    };
 
-      const res = await fetch(
-        `http://localhost:5000/listings/search?q=${encodeURIComponent(
-          searchQuery
-        )}`
-      );
-      const data = await res.json();
-      setListings(data);
-    } catch (err) {
-      console.error("Error searching listings:", err);
-    }
+    fetchListings();
+  }, [location.search]); // run every time URL changes
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    navigate(
+      searchQuery.trim()
+        ? `/marketplace?search=${encodeURIComponent(searchQuery)}`
+        : "/marketplace"
+    );
   };
 
   const handleAddToComparison = (listing) => {
@@ -53,7 +61,6 @@ export default function Marketplace() {
   return (
     <>
       {/* Header */}
-
       <div className="flex flex-col  mx-auto max-w-[1440px] items-center bg-white h-[420px] p-[10px]">
         <div className="flex flex-col w-[83%] justify-center mt-10 mb-2">
           {/* Path */}
@@ -84,7 +91,12 @@ export default function Marketplace() {
                 className="w-[811px] h-[61px] border border-gray-300 rounded-sm pl-8 placeholder:text-[15px] placeholder:text-black text-black"
               ></input>
             </form>
-            <button className="w-[230px] h-[61px] bg-[#F0EFEE] text-[15px] text-black font-bold">
+            <button className="flex justify-center items-center pr-4 gap-2 w-[230px] h-[61px] bg-[#F0EFEE] text-[15px] text-black font-bold">
+              <img
+                src={saveIcon}
+                alt="save icon"
+                className="w-[20px] h-[20px]"
+              />
               save this search
             </button>
           </div>

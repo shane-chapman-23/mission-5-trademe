@@ -159,7 +159,7 @@ export default function ComparisonBox({
               </div>
             </div>
           ) : (
-            /* Compact row view (your current code) */
+            /* Compact row view */
             <div>
               {comparisonList.map((item) => (
                 <div
