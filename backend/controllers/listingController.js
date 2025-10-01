@@ -16,7 +16,7 @@ export async function searchListings(req, res) {
   try {
     const {q} = req.query;
     if (!q) {
-      return res.json([]); // empty query → empty results
+      return res.json([]);
     }
 
     const results = await searchListingsService(q);
