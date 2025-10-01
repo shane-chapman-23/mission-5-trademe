@@ -1,6 +1,5 @@
-import boots1 from "../assets/images/boots1.jpg";
 import {useNavigate} from "react-router-dom";
-// import wishlistIcon from "../assets/icons/";
+import wishlistIcon from "../assets/icons/magnet.svg";
 
 export default function ListingCard({listing, onAddToComparison}) {
   const navigate = useNavigate();
@@ -12,9 +11,12 @@ export default function ListingCard({listing, onAddToComparison}) {
   return (
     <div className="flex flex-col h-[408px] w-[350px] rounded-lg shadow-lg relative ">
       {/* Wishlist button */}
-      <button className="absolute top-0 right-0 w-[0] h-0 border-l-[60px] border-l-transparent border-b-[60px] border-b-yellow-400 rotate-270 rounded-b">
-        <img />
-      </button>
+      <button className="absolute top-0 right-0 w-[0] h-0 border-l-[60px] border-l-transparent border-b-[60px] border-b-yellow-400 rotate-270 rounded-b"></button>
+      <img
+        src={wishlistIcon}
+        alt="wishlist icon"
+        className="absolute top-[8px] right-[8px] w-5 h-5"
+      />
       {/* Add to comparison list button */}
       <div className="absolute top-3 left-3">
         <div className="relative flex items-center group">

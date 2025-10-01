@@ -49,6 +49,7 @@ export default function Marketplace() {
 
   const handleAddToComparison = (listing) => {
     setComparisonList((prev) => {
+      if (prev.length >= 4) return prev;
       if (prev.find((item) => item._id === listing._id)) return prev;
       return [...prev, listing];
     });
@@ -64,13 +65,9 @@ export default function Marketplace() {
       <div className="flex flex-col  mx-auto max-w-[1440px] items-center bg-white h-[420px] p-[10px]">
         <div className="flex flex-col w-[83%] justify-center mt-10 mb-2">
           {/* Path */}
-          <p className="text-[12px] text-[#007acd]">
-            Home / Marketplace / Clothing & Fashion
-          </p>
+          <p className="text-[12px] text-[#007acd]">Home / Marketplace</p>
           {/* Title */}
-          <h1 className="text-[#4a56CC] text-[36px] font-bold">
-            CLOTHING & FASHION
-          </h1>
+          <h1 className="text-[#4a56CC] text-[36px] font-bold">MARKETPLACE</h1>
         </div>
         {/* Search Bar Container */}
         <div className="flex justify-center w-full px-1 my-5">
@@ -103,11 +100,11 @@ export default function Marketplace() {
         </div>
         {/* Filters */}
         <div className="flex w-[83%] gap-5 my-5 px-1">
-          <button className="w-[108px] h-[35px] bg-[#007ACD] rounded-2xl  px-2 text-[10px] items-center justify-center font-semibold">
+          <button className="w-[108px] h-[35px] bg-[#007ACD] rounded-2xl text-white px-2 text-[10px] items-center justify-center font-semibold">
             Refine
           </button>
-          <button className="h-[35px] w-[173px] bg-[#007ACD] rounded-2xl px-2 text-[10px] items-center justify-center font-semibold">
-            Category: Clothing and Fashion
+          <button className="h-[35px] w-[173px] bg-[#007ACD] rounded-2xl text-white px-2 text-[10px] items-center justify-center font-semibold">
+            Category: All
           </button>
           <button className="min-w-[108px] h-[35px] border border-blue-500 rounded-2xl px-2 text-[10px] items-center justify-center text-blue-500 font-semibold">
             All Locations
