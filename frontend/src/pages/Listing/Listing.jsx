@@ -35,6 +35,8 @@ function Listing() {
   // Place Bid Modal
   const [showBidModal, setShowBidModal] = useState(false);
   const [showModal, setShowModal] = useState(true);
+  const [winBid, setWinBid] = useState(false);
+  const [leadBid, setLeadBid] = useState(false);
 
   // Coachmark variables
   const [run, setRun] = useState(false);
@@ -253,6 +255,8 @@ function Listing() {
 
             if (type === "step:before") {
               setHighlightListing(index === 0);
+              setLeadBid(index === 7);
+              setWinBid(index === 8);
 
               if (index === 5) {
                 setShowBidModal(false);
@@ -340,7 +344,9 @@ function Listing() {
                   <img src={boots1} className="w-[192px] h-[144px] object-cover" />
                   <div className="flex flex-col p-3">
                     <div className="flex text-[#76716d] text-xs leading-4">
-                      <div className="pr-2 mr-2 mb-2 border-r border-[#d7d5d2]">Auckland City, Auckland</div>
+                      <div className="pr-2 mr-2 mb-2 border-r border-[#d7d5d2]">
+                        {listing.sub_location}, {listing.location}
+                      </div>
                       <div className="mb-2">Closes:Sun, 5 Oct</div>
                     </div>
                     <div className="text-sm text-[#44413d] font-medium leading-4">{listing.title}</div>
@@ -376,7 +382,9 @@ function Listing() {
                       <input type="radio" className="radio cursor-pointer" />
                       <div className="pl-3">
                         <div>I will arrange shipping with the seller</div>
-                        <div className="text-[#76716d] text-xs leading-4">Seller is located in Auckland City, Auckland</div>
+                        <div className="text-[#76716d] text-xs leading-4">
+                          Seller is located in {listing.sub_location}, {listing.location}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -421,7 +429,7 @@ function Listing() {
                 <div className={`${highlightListing ? "bg-red-500 text-white rounded-md p-3" : ""}`}>
                   <div className="carousel h-[50vh] min-h-[400px] max-h-[478px] max-w-[812px]  ">
                     <div id="slide1" className="carousel-item relative w-full">
-                      <img src={boots1} className="w-full object-cover rounded-2xl" />
+                      <img src={listing.image1} className="w-[812px] object-cover rounded-2xl" />
                       <div className="absolute left-0 right-0 top-1/2 flex -translate-y-1/2 transform justify-between">
                         <div className="bg-black/60 text-[#fff] text-[16px] text-center min-w-[32px] min-h-[32px] px-[8px] py-[12px] rounded-r-[3px]">
                           <a href="#slide4">
@@ -436,7 +444,7 @@ function Listing() {
                       </div>
                     </div>
                     <div id="slide2" className="carousel-item relative w-full">
-                      <img src={boots2} className="w-full object-cover rounded-2xl" />
+                      <img src={listing.image2} className="w-full object-cover rounded-2xl" />
                       <div className="absolute left-0 right-0 top-1/2 flex -translate-y-1/2 transform justify-between">
                         <div className="bg-black/60 text-[#fff] text-[16px] text-center min-w-[32px] min-h-[32px] px-[8px] py-[12px] rounded-r-[3px]">
                           <a href="#slide1">
@@ -451,7 +459,7 @@ function Listing() {
                       </div>
                     </div>
                     <div id="slide3" className="carousel-item relative w-full">
-                      <img src={boots3} className="w-full object-cover rounded-2xl" />
+                      <img src={listing.image3} className="w-full object-cover rounded-2xl" />
                       <div className="absolute left-0 right-0 top-1/2 flex -translate-y-1/2 transform justify-between">
                         <div className="bg-black/60 text-[#fff] text-[16px] text-center min-w-[32px] min-h-[32px] px-[8px] py-[12px] rounded-r-[3px]">
                           <a href="#slide2">
@@ -466,7 +474,7 @@ function Listing() {
                       </div>
                     </div>
                     <div id="slide4" className="carousel-item relative w-full">
-                      <img src={boots4} className="w-full object-cover rounded-2xl" />
+                      <img src={listing.image4} className="w-full object-cover rounded-2xl" />
                       <div className="absolute left-0 right-0 top-1/2 flex -translate-y-1/2 transform justify-between">
                         <div className="bg-black/60 text-[#fff] text-[16px] text-center min-w-[32px] min-h-[32px] px-[8px] py-[12px] rounded-r-[3px]">
                           <a href="#slide3">
@@ -484,16 +492,16 @@ function Listing() {
                   {/* IMAGE SELECT */}
                   <div className="flex w-full mt-[2px] pb-[8px] gap-1 mb-6">
                     <a href="#slide1">
-                      <img src={boots1s} className="w-[64px] h-[48px] object-cover" />
+                      <img src={listing.image1s} className="w-[64px] h-[48px] object-cover" />
                     </a>
                     <a href="#slide2">
-                      <img src={boots2s} className="w-[64px] h-[48px] object-cover" />
+                      <img src={listing.image2s} className="w-[64px] h-[48px] object-cover" />
                     </a>
                     <a href="#slide3">
-                      <img src={boots3s} className="w-[64px] h-[48px] object-cover" />
+                      <img src={listing.image3s} className="w-[64px] h-[48px] object-cover" />
                     </a>
                     <a href="#slide4">
-                      <img src={boots4s} className="w-[64px] h-[48px] object-cover" />
+                      <img src={listing.image4s} className="w-[64px] h-[48px] object-cover" />
                     </a>
                   </div>
                 </div>
@@ -538,7 +546,7 @@ function Listing() {
                           </tr>
                           <tr className="table-row">
                             <td className="table-cell h-10 w-full py-2 px-4 border-b border-gray-300 text-left">
-                              Pick-up available from Auckland City, Auckland
+                              Pick-up available from {listing.sub_location}, {listing.location}
                             </td>
                             <td className="table-cell h-10 w-full py-2 px-4 border-b border-gray-300 text-right">Free</td>
                           </tr>
@@ -604,34 +612,55 @@ function Listing() {
                 {/* PRICES - STARTING / BID / ETC */}
                 <div className="w-full mb-4 border border-[#d7d5d2] rounded-lg shadow-sm">
                   <div data-tour="purchase">
-                    {/* BUY NOW */}
-                    <div className="p-4">
-                      <p className="text-center">Buy Now</p>
-                      <h1 className="text-[32px] text-[#44413d] text-center leading-10 mb-6">
-                        <strong>${listing.buy_now}</strong>
-                      </h1>
-                      <button className="btn min-w-8 min-h-8 py-6 px-6 mb-2 rounded-b-sm bg-[#007acd] w-full text-[#fff] text-[16px] border-0 font-medium cursor-pointer">
-                        Buy Now
-                      </button>
-                    </div>
-                    {/* STARTING PRICE */}
-                    <div className="p-4">
-                      <div data-tour="currentBid">
-                        <p className="text-center">Starting Price</p>
+                    {leadBid ? (
+                      <div data-tour="currentBid" className="p-4 ">
+                        <p className="text-center">Current bid</p>
                         <h1 className="text-[32px] text-[#44413d] text-center leading-10 mb-6">
-                          <strong>${listing.start_price}</strong>
+                          <strong>$5</strong>
                         </h1>
+                        <p className="text-center text-[#1B8840]">You lead the bidding</p>
+
+                        <button className="btn min-w-8 min-h-8 py-6 px-6 mb-2 rounded-b-sm bg-[#007acd] w-full text-[#fff] text-[16px] border-0 font-medium cursor-pointer">
+                          Place Bid
+                        </button>
+                        <p className="text-center">Reserve not met</p>
+                        <div className="px-3 py-1.5 text-center text-[#007acd] cursor-pointer">6 bids so far - view history</div>
                       </div>
-                      <button
-                        data-tour="bid"
-                        onClick={() => setShowBidModal(true)}
-                        className="btn min-w-8 min-h-8 py-6 px-6 mb-6 rounded-b-sm bg-[#007acd] w-full text-[#fff] text-[16px] border-0 font-medium cursor-pointer"
-                      >
-                        Place Bid
-                      </button>
-                      <p className="text-center">Reserve not met</p>
-                      <div className="px-3 py-1.5 text-center text-[#007acd] cursor-pointer">6 bids so far - view history</div>
-                    </div>
+                    ) : winBid ? (
+                      <div></div>
+                    ) : (
+                      <>
+                        {/* BUY NOW */}
+                        <div className="p-4">
+                          <p className="text-center">Buy Now</p>
+                          <h1 className="text-[32px] text-[#44413d] text-center leading-10 mb-6">
+                            <strong>${listing.buy_now}</strong>
+                          </h1>
+                          <button className="btn min-w-8 min-h-8 py-6 px-6 mb-2 rounded-b-sm bg-[#007acd] w-full text-[#fff] text-[16px] border-0 font-medium cursor-pointer">
+                            Buy Now
+                          </button>
+                        </div>
+                        {/* STARTING PRICE */}
+                        <div className="p-4">
+                          <div data-tour="currentBid">
+                            <p className="text-center">Starting Price</p>
+                            <h1 className="text-[32px] text-[#44413d] text-center leading-10 mb-6">
+                              <strong>${listing.start_price}</strong>
+                            </h1>
+                          </div>
+                          <button
+                            data-tour="bid"
+                            onClick={() => setShowBidModal(true)}
+                            className="btn min-w-8 min-h-8 py-6 px-6 mb-6 rounded-b-sm bg-[#007acd] w-full text-[#fff] text-[16px] border-0 font-medium cursor-pointer"
+                          >
+                            Place Bid
+                          </button>
+                          <p className="text-center">Reserve not met</p>
+                          <div className="px-3 py-1.5 text-center text-[#007acd] cursor-pointer">6 bids so far - view history</div>
+                        </div>
+                      </>
+                    )}
+
                     {/* MAKE AN OFFER */}
                     <div className="border-t border-t-[#d7d5d2] p-4 ">
                       <div className="grid grid-cols-2 py-4 gap-2 items-center">
@@ -652,7 +681,9 @@ function Listing() {
                     </div>
                     <div className="flex gap-4">
                       <img src={location} />
-                      <p className="text-sm">Pick up available, Queenstown, Otago</p>
+                      <p className="text-sm">
+                        Pick up available, {listing.sub_location}, {listing.location}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -677,7 +708,9 @@ function Listing() {
                     <p>
                       <span className="text-lg font-medium text-[#44413d]">100%</span> positive feedback
                     </p>
-                    <p className="leading-5 text-sm">Seller located in Auckland City, Auckland</p>
+                    <p className="leading-5 text-sm">
+                      Seller located in {listing.sub_location}, {listing.location}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -698,7 +731,7 @@ function Listing() {
                 <div className="pb-2 mb-6 w-full ">
                   <div className="py-2 flex border-b border-[#d7d5d2]">
                     <div className="grow shrink basis mr-2 text-left">Location</div>
-                    <div className="shrink basis-auto text-right">Auckland City</div>
+                    <div className="shrink basis-auto text-right">{listing.location}</div>
                   </div>
                   <div className="py-2 flex border-b border-[#d7d5d2]">
                     <div className="grow shrink basis mr-2 text-left">Member since</div>
