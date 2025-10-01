@@ -1,7 +1,5 @@
-import {useNavigate} from "react-router-dom";
-
 import boots1 from "../assets/images/boots1.jpg";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 // import wishlistIcon from "../assets/icons/";
 
 export default function ListingCard({listing, onAddToComparison}) {
@@ -43,9 +41,14 @@ export default function ListingCard({listing, onAddToComparison}) {
       </div>
       {/* Image */}
 
-      <div onClick={openListing} className="bg-gray-200 h-[70%] flex justify-center rounded-t cursor-pointer">
-        <img src={listing.image1} className="w-full object-cover"></img>
-
+      <div
+        onClick={openListing}
+        className="bg-gray-200 h-[70%] flex justify-center rounded-t-lg cursor-pointer"
+      >
+        <img
+          src={listing.image1}
+          className="w-full object-cover rounded-t-lg"
+        ></img>
       </div>
       {/* Details */}
       <div
@@ -59,18 +62,24 @@ export default function ListingCard({listing, onAddToComparison}) {
           </div>
           <div className="flex justify-between my-3">
             <div>
-              <h2 className="text-black text-[12px] font-bold">{listing.title}</h2>
-              <p className="text-gray-500 text-[8px]">${listing.shipping_cost}.00 shipping nationwide</p>
-              <p className="text-gray-500 text-[8px]">Expected delivery in 2-3 business days</p>
-
+              <h2 className="text-black text-[12px] font-bold">
+                {listing.title}
+              </h2>
+              <p className="text-gray-500 text-[8px]">
+                ${listing.shipping_cost}.00 shipping nationwide
+              </p>
+              <p className="text-gray-500 text-[8px]">
+                Expected delivery in 2-3 business days
+              </p>
             </div>
           </div>
           {/* Current bid */}
-          <div className="flex">
+          <div className="flex justify-between">
             <div className="h-100% flex flex-col justify-end">
               <p className="text-gray-500 text-[8px]">No reserve</p>
-              <p className="text-black text-[10px]  font-bold">{`$${Number(listing.start_price).toFixed(2)}` || "$10.00"}</p>
-
+              <p className="text-black text-[10px]  font-bold">
+                {`$${Number(listing.start_price).toFixed(2)}` || "$10.00"}
+              </p>
             </div>
             {/* buy now price */}
             {listing.buy_now && (

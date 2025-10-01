@@ -14,7 +14,7 @@ export default function ComparisonBox({
 
   return (
     <div
-      className={`fixed bottom-4 right-4 bg-white shadow-lg z-50 ${
+      className={`fixed bottom-4 right-4 rounded-lg bg-white shadow-lg z-50 ${
         isExpanded ? "w-[700px] h-[420px] " : "w-[372px] h-auto"
       }`}
     >
@@ -32,7 +32,11 @@ export default function ComparisonBox({
         </button>
       )}
       {/* Header */}
-      <div className="flex justify-between items-center bg-[#4678C1] h-[58px] px-3 ">
+      <div
+        className={`flex justify-between ${
+          isOpen ? "rounded-t-lg" : "rounded-lg"
+        } items-center bg-[#4678C1] h-[58px] px-3 `}
+      >
         <h3 className="font-bold text-white text-[14px] pl-7">
           Comparison List
         </h3>
@@ -66,7 +70,7 @@ export default function ComparisonBox({
                 {comparisonList.map((item) => (
                   <div
                     key={item._id}
-                    className="p-2 relative bg-gray-200 h-[340px] w-[302px]  shadow-lg text-black leading-tight"
+                    className="p-2 relative bg-gray-200 h-[340px] w-[302px]  rounded-lg shadow-lg text-black leading-tight"
                   >
                     {/* Remove Button */}
                     <button
@@ -78,7 +82,7 @@ export default function ComparisonBox({
                     <div className="flex">
                       {/* Image */}
                       <img
-                        src={item.image || boots1}
+                        src={item.image1}
                         alt={item.title}
                         className="h-[100px] w-[69px] object-cover rounded"
                       />
@@ -168,9 +172,9 @@ export default function ComparisonBox({
                 >
                   <div className="flex items-center h-[58px]">
                     <img
-                      src={item.image || boots1}
+                      src={item.image1}
                       alt={item.title}
-                      className="h-[43px] object-cover rounded pl-3"
+                      className="h-[43px] w-[35px] object-cover rounded pl-3"
                     />
                     <span className="pl-3">{item.title}</span>
                   </div>
