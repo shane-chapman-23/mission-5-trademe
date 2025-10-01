@@ -13,6 +13,6 @@ export async function searchListingsService(query) {
   };
 
   return Listing.find(searchConditions).select(
-    "title description start_price current_bid buy_now"
+    "title description start_price buy_now location sub_location shipping_cost image1 image2 image3 image4 image1s image2s image3s image4s"
   );
 }
