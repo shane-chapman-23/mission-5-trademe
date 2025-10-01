@@ -19,6 +19,9 @@ import ping from "../../assets/icons/ping.svg";
 import rightArrow from "../../assets/icons/rightArrow.svg";
 import addFav from "../../assets/icons/addFav.svg";
 import share from "../../assets/icons/share.svg";
+import placeBid from "../../assets/icons/tut-placebid.svg";
+import buyNow from "../../assets/icons/tut-buynow.svg";
+import makeOffer from "../../assets/icons/tut-makeoffer.svg";
 
 import Joyride from "react-joyride";
 import { useLocation } from "react-router-dom";
@@ -54,30 +57,83 @@ function Listing() {
     {
       target: 'div[data-tour="seller"]',
       placement: "left",
-      content:
-        "Member have feedback ratings, the higher rating the more successfully completed positive trades. The more stars the more trustworthy the seller.",
+      content: (
+        <div>
+          <h4 className="font-extrabold text-left">Learn about the seller</h4>
+          <br />
+          <p className="text-left">
+            Member have feedback ratings, the higher rating the more successfully completed positive trades. The more stars the more trustworthy the
+            seller.
+          </p>
+        </div>
+      ),
+
       showSkipButton: false,
       hideBackButton: true,
     },
     {
       target: 'button[data-tour="watchlist"]',
-      content: "Not ready to act? Click Add to Watchlist to save the listing and get updates.",
+      content: (
+        <div>
+          <h4 className="font-extrabold text-left">Step 2: Save to Wathclist</h4>
+          <br />
+          <p className="text-left">Not ready to act? Click Add to Watchlist to save the listing and get updates.</p>
+        </div>
+      ),
+
       showSkipButton: false,
       hideBackButton: true,
     },
     {
       target: 'div[data-tour="question"]',
       placement: "top",
-      content:
-        "Make sure you are have all the information you need before buying. Sellers can answer questions until the listing closes. Its in best interest of seller to provide as much information about their item as possible.",
+      content: (
+        <div>
+          <h4 className="font-extrabold text-left">Step 2: Save to Wathclist</h4>
+          <br />
+          <p className="text-left">Make sure you are have all the information you need before buying.</p>
+          <br />
+          <p className="text-left">
+            Sellers can answer questions until the listing closes. Its in best interest of seller to provide as much information about their item as
+            possible.
+          </p>
+        </div>
+      ),
+
       showSkipButton: false,
       hideBackButton: true,
     },
     {
       target: 'div[data-tour="purchase"]',
       placement: "left-start",
-      content:
-        "You’ve got three doors to ownership: Place a Bid – Join the battle and outbid others. Buy Now – Skip the fight, claim it instantly. Make an Offer – Try your luck and see if the seller accepts your deal.",
+      content: (
+        <div>
+          <h4 className="font-extrabold text-left ml-14">Step 3: Pick your purchase route</h4>
+          <br />
+          <p className="text-left ml-14">You've got three doors to ownership:</p>
+          <br />
+          <div className="flex items-center gap-2.5 mb-2.5">
+            <img src={placeBid} />
+            <p className="text-left">
+              <span className="text-[#4854D3] font-extrabold">Place a Bid - </span>Join the battle and outbid others.
+            </p>
+          </div>
+          <div className="flex items-center gap-2.5 mb-2.5">
+            <img src={buyNow} />
+            <p className="text-left">
+              <span className="text-[#4854D3] font-extrabold">Buy Now - </span>Skip the fight, claim it instantly
+            </p>
+          </div>
+          <div className="flex items-center gap-2.5">
+            <img src={makeOffer} />
+            <p className="text-left">
+              <span className="text-[#4854D3] font-extrabold">Make an offer - </span>Make an offer - Try your luck and see if the seller accepts your
+              deal.
+            </p>
+          </div>
+        </div>
+      ),
+
       showSkipButton: false,
       hideBackButton: true,
     },
@@ -106,7 +162,15 @@ function Listing() {
     {
       target: "body",
       placement: "center",
-      content: "Congrats",
+      content: (
+        <div>
+          <h4 className="font-extrabold text-left">If you win the auction, the item is yours!</h4>
+          <br />
+          <p className="text-left">You will receive an email to guide you on payment and delivery options.</p>
+          <br />
+          <p className="text-left">Any more questions, head to our Help page.</p>
+        </div>
+      ),
       hideBackButton: true,
     },
   ];
@@ -152,7 +216,8 @@ function Listing() {
             },
             tooltip: {
               borderRadius: 6,
-              width: "380px",
+              width: "450px",
+              minWidth: "380px",
               // height: "274px",
             },
             tooltipContent: {
