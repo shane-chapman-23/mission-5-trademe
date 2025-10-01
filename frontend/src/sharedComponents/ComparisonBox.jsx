@@ -71,7 +71,7 @@ export default function ComparisonBox({
                     {/* Remove Button */}
                     <button
                       onClick={() => handleRemoveFromComparison(item._id)}
-                      className="absolute top-1 right-2 text-[#8C8C8C] font-bold"
+                      className="absolute top-1 right-2 text-[#8C8C8C] font-bold cursor-pointer"
                     >
                       ✕
                     </button>
@@ -177,7 +177,7 @@ export default function ComparisonBox({
                   {/* Remove Button */}
                   <button
                     onClick={() => handleRemoveFromComparison(item._id)}
-                    className="text-[#8C8C8C] font-bold pr-4 text-[22px]"
+                    className="text-[#8C8C8C] font-bold pr-4 text-[22px] cursor-pointer"
                   >
                     ✕
                   </button>
