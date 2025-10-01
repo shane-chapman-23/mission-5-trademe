@@ -1,7 +1,5 @@
-import {useNavigate} from "react-router-dom";
-
 import boots1 from "../assets/images/boots1.jpg";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 // import wishlistIcon from "../assets/icons/";
 
 export default function ListingCard({listing, onAddToComparison}) {
