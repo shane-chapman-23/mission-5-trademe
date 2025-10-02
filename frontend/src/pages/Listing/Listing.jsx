@@ -71,7 +71,7 @@ function Listing() {
                     </p>
                   </div>
                   {/* DESCRIPTION */}
-                  <div className={`flex mb-6 ${highlightListing ? "bg-red-500 text-white rounded-md p-3" : ""}`}>
+                  <div className={`flex mb-6 ${highlightListing ? "bg-[#007ACD] text-white rounded-md p-3" : ""}`}>
                     <h4 className="w-[25%] mb-4 text-[#44413d] text-lg font-medium">Description</h4>
                     <p className="w-[75%] mb-4 ">{listing.description.replace(/\n/g, "<br />") || "No description provided."}</p>
                   </div>

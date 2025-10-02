@@ -10,7 +10,7 @@ function ListingSidebar({ listing, highlightListing, leadBid, winBid, setShowBid
     <div className="w-[33.3334%]">
       <h1
         data-tour="listing"
-        className={`text-[#44413d] text-3xl leading-10 font-bold mb-4 ${highlightListing ? "bg-red-500 text-white rounded-md p-3" : ""}`}
+        className={`text-[#44413d] text-3xl leading-10 font-bold mb-4 ${highlightListing ? "bg-[#007ACD] text-white rounded-md p-3" : ""}`}
       >
         {listing.title}
       </h1>

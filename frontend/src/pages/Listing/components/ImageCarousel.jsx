@@ -6,7 +6,7 @@ function ImageCarousel({ images, highlight }) {
   const { image1, image2, image3, image4, image1s, image2s, image3s, image4s } = images;
 
   return (
-    <div className={`${highlight ? "bg-red-500 text-white rounded-md p-3" : ""}`}>
+    <div className={`${highlight ? "bg-[#007ACD] text-white rounded-md p-3" : ""}`}>
       <div className="carousel h-[50vh] min-h-[400px] max-h-[478px] max-w-[812px]">
         <div id="slide1" className="carousel-item relative w-full">
           <img src={image1} className="w-[812px] object-cover rounded-2xl" />
