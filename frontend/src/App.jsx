@@ -1,7 +1,7 @@
-import Navbar from "./sharedComponents/navBar";
+import Navbar from "./sharedComponents/Navbar";
 import Footer from "./sharedComponents/Footer";
 
-import {Outlet} from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 import "./App.css";
 
