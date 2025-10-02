@@ -34,7 +34,7 @@ export default function ComparisonBox({
       {/* Header */}
       <div
         className={`flex justify-between ${
-          isOpen ? "rounded-t-lg" : "rounded-lg"
+          isOpen && comparisonList.length > 0 ? "rounded-t-lg" : "rounded-lg"
         } items-center bg-[#4678C1] h-[58px] px-3 `}
       >
         <h3 className="font-bold text-white text-[14px] pl-7">
@@ -88,14 +88,16 @@ export default function ComparisonBox({
                       />
                       <div className="ml-2 ">
                         {/* Title */}
-                        <h4 className="font-bold text-[14px]">{item.title}</h4>
+                        <h4 className="font-bold text-[14px] w-[200px] mb-2">
+                          {item.title}
+                        </h4>
 
                         {/* Bid and shipping details */}
                         <p className="text-[10px] text-black">
                           <span className="font-bold">
                             Current highest bid:{" "}
                           </span>
-                          ${item.current_bid || "11"}
+                          ${item.start_price}
                         </p>
                         <p className=" text-[10px]">
                           <span className="font-bold ">Buy now: </span> $
@@ -114,6 +116,11 @@ export default function ComparisonBox({
                     <div className="flex justify-between mt-5 mr-5 text-[10px]">
                       <div>
                         <p className="font-bold text-[12px]">Description:</p>
+                        <p className="w-[150px]">
+                          {item.description.length > 50
+                            ? item.description.slice(0, 75) + "..."
+                            : item.description}
+                        </p>
                       </div>
                       <div>
                         <p className="text-[12px] font-bold">Product Details</p>
@@ -143,13 +150,13 @@ export default function ComparisonBox({
                     <div className="flex mt-14 justify-between ">
                       {/* User details */}
                       <div className="flex items-center">
-                        <img
-                          className="rounded-full h-[34px] w-[34px]"
-                          src={boots1}
-                          alt="user profile picture"
-                        ></img>
+                        <div className="w-[34px] h-[34px] bg-[#ffe8ac] rounded-full text-[20px] text-[#eb9600] flex items-center justify-center">
+                          S
+                        </div>
                         <div className="ml-2">
-                          <p className="font-semi-bold text-[12px]">Shane123</p>
+                          <p className="font-semi-bold text-[12px]">
+                            Simonette
+                          </p>
                           <p className="text-[8px]">100% positive feedback</p>
                         </div>
                       </div>
@@ -176,7 +183,7 @@ export default function ComparisonBox({
                       alt={item.title}
                       className="h-[43px] w-[35px] object-cover rounded pl-3"
                     />
-                    <span className="pl-3">{item.title}</span>
+                    <span className="pl-3 w-[250px]">{item.title}</span>
                   </div>
                   {/* Remove Button */}
                   <button
