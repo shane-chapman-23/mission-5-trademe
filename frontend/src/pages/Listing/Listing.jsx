@@ -1,12 +1,3 @@
-import axios from "axios";
-import boots1 from "../../assets/images/boots1.jpg";
-import boots2 from "../../assets/images/boots2.jpg";
-import boots3 from "../../assets/images/boots3.jpg";
-import boots4 from "../../assets/images/boots4.jpg";
-import boots1s from "../../assets/images/boots1s.jpg";
-import boots2s from "../../assets/images/boots2s.jpg";
-import boots3s from "../../assets/images/boots3s.jpg";
-import boots4s from "../../assets/images/boots4s.jpg";
 import left from "../../assets/icons/left-white.svg";
 import right from "../../assets/icons/right-white.svg";
 import clock from "../../assets/icons/clock.svg";
@@ -22,10 +13,13 @@ import share from "../../assets/icons/share.svg";
 import placeBid from "../../assets/icons/tut-placebid.svg";
 import buyNow from "../../assets/icons/tut-buynow.svg";
 import makeOffer from "../../assets/icons/tut-makeoffer.svg";
+import confetti from "canvas-confetti"; // Add this import
+
+import ListingTutorial from "./components/ListingTutorial";
 
 import Joyride from "react-joyride";
 import { useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react"; // Add useRef
 
 function Listing() {
   const { state } = useLocation(); // Router state (contains listing if navigated from Marketplace)
@@ -156,14 +150,14 @@ function Listing() {
     },
     {
       target: 'div[data-tour="currentBid"]',
-      placement: "left",
+      placement: "left-start",
       content: "When you have placed your bid, It should say here that you are leading the bid. ",
       showSkipButton: false,
       hideBackButton: true,
     },
     {
-      target: "body",
-      placement: "center",
+      target: 'div[data-tour="winBid"]',
+      placement: "left-start",
       content: (
         <div>
           <h4 className="font-extrabold text-left">If you win the auction, the item is yours!</h4>
@@ -198,123 +192,62 @@ function Listing() {
     };
   }, [showModal, showBidModal]); // Re-run effect when modal states change
 
+  // Add ref to track confetti interval
+  const confettiIntervalRef = useRef(null);
+
+  // Add cleanup function for confetti
+  useEffect(() => {
+    return () => {
+      if (confettiIntervalRef.current) {
+        clearInterval(confettiIntervalRef.current);
+      }
+    };
+  }, []);
+
+  const startConfettiAnimation = () => {
+    const duration = 60 * 60 * 1000,
+      animationEnd = Date.now() + duration,
+      defaults = { startVelocity: 30, spread: 360, ticks: 500, zIndex: 9999 };
+
+    function randomInRange(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    confettiIntervalRef.current = setInterval(function () {
+      const timeLeft = animationEnd - Date.now();
+
+      if (timeLeft <= 0) {
+        return clearInterval(confettiIntervalRef.current);
+      }
+
+      const particleCount = 30 * (timeLeft / duration);
+
+      // since particles fall down, start a bit higher than random
+      confetti(
+        Object.assign({}, defaults, {
+          particleCount,
+          origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+        })
+      );
+      confetti(
+        Object.assign({}, defaults, {
+          particleCount,
+          origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+        })
+      );
+    }, 250);
+  };
+
   return (
     <>
       <main className="leading-6 text-[#65605d] ">
-        <Joyride
-          steps={steps}
-          run={run}
-          continuous
-          showProgress
-          showSkipButton
-          stepIndex={stepIndex} // Add this prop
-          locale={{
-            nextLabelWithProgress: "Next",
-          }}
-          styles={{
-            options: {
-              primaryColor: "#4f46e5",
-              zIndex: 9999,
-            },
-            tooltip: {
-              borderRadius: 6,
-              width: "450px",
-              minWidth: "380px",
-              // height: "274px",
-            },
-            tooltipContent: {
-              padding: "12px",
-              color: "#000000",
-            },
-            tooltipFooter: {
-              // alignItems: "center",
-              display: "flex",
-              justifyContent: "center",
-              marginTop: 15,
-            },
-            tooltipFooterSpacer: {
-              flex: 0,
-            },
-            buttonNext: {
-              backgroundColor: "#FFC041",
-              color: "#A8520C",
-              fontSize: "12px",
-              fontWeight: "400",
-              padding: "10px",
-              borderRadius: "5px",
-              border: "none",
-              width: "112.84px",
-              // height: "21.36px",
-              alignItems: "center",
-              top: "224px",
-              marginTop: "30px",
-            },
-          }}
-          callback={(data) => {
-            const { status, type, index, action } = data;
-
-            if (type === "step:before") {
-              setHighlightListing(index === 0);
-              setLeadBid(index === 7);
-              setWinBid(index === 8);
-
-              if (index === 5) {
-                setShowBidModal(false);
-              }
-            }
-
-            // Handle normal step progression
-            if (type === "step:after") {
-              // For normal steps, just advance to the next index
-              if (index !== 5) {
-                setStepIndex(index + 1);
-              }
-              // Special handling for step 6 (index 5)
-              else {
-                // After clicking the bid button in step 6
-                setShowBidModal(true);
-
-                // Stop the tour temporarily
-                setRun(false);
-
-                // Give modal time to render, then advance to step 7
-                setTimeout(() => {
-                  setStepIndex(6); // Set to step 7 (index 6)
-                  setRun(true); // Restart the tour
-                }, 600);
-              }
-            }
-
-            if (["finished", "skipped"].includes(status)) {
-              setHighlightListing(false);
-              setShowBidModal(false);
-              setRun(false);
-              setStepIndex(0); // Reset index
-            }
-
-            // Close modal after completing step 8
-            if (index === 7) {
-              setShowBidModal(false);
-            }
-          }}
+        <ListingTutorial
+          listing={listing}
+          onHighlightListingChange={setHighlightListing}
+          onLeadBidChange={setLeadBid}
+          onWinBidChange={setWinBid}
+          onShowBidModalChange={setShowBidModal}
         />
-
-        {showModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-            <div className="bg-white rounded-lg shadow-lg max-w-sm w-full p-6">
-              <h2 className="text-xl font-semibold">Welcome!</h2>
-              <p className="mt-3 text-sm text-gray-600">You're one step closer to bidding like a pro!</p>
-              <div className="mt-6 flex gap-3 justify-end">
-                <button onClick={() => setShowModal(false)} className="px-4 py-2 text-sm rounded border">
-                  Dismiss
-                </button>
-                <button onClick={startTour} className="px-4 py-2 text-sm rounded bg-indigo-600 text-white">
-                  Begin tutorial
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
 
         {showBidModal && (
           <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/80">
@@ -341,7 +274,7 @@ function Listing() {
               {/* Modal Body */}
               <div className="px-6 pb-4 ">
                 <div className="w-full h-full mb-6 bg-[#f6f5f4] flex">
-                  <img src={boots1} className="w-[192px] h-[144px] object-cover" />
+                  <img src={listing.image1} className="w-[192px] h-[144px] object-cover" />
                   <div className="flex flex-col p-3">
                     <div className="flex text-[#76716d] text-xs leading-4">
                       <div className="pr-2 mr-2 mb-2 border-r border-[#d7d5d2]">
@@ -615,10 +548,10 @@ function Listing() {
                     {leadBid ? (
                       <div data-tour="currentBid" className="p-4 ">
                         <p className="text-center">Current bid</p>
-                        <h1 className="text-[32px] text-[#44413d] text-center leading-10 mb-6">
+                        <h1 className="text-[32px] text-[#44413d] text-center leading-10 mb-4">
                           <strong>$5</strong>
                         </h1>
-                        <p className="text-center text-[#1B8840]">You lead the bidding</p>
+                        <p className="text-center text-[#1B8840] mb-3 font-bold">You lead the bidding</p>
 
                         <button className="btn min-w-8 min-h-8 py-6 px-6 mb-2 rounded-b-sm bg-[#007acd] w-full text-[#fff] text-[16px] border-0 font-medium cursor-pointer">
                           Place Bid
@@ -627,7 +560,19 @@ function Listing() {
                         <div className="px-3 py-1.5 text-center text-[#007acd] cursor-pointer">6 bids so far - view history</div>
                       </div>
                     ) : winBid ? (
-                      <div></div>
+                      <div data-tour="winBid" className="p-4 ">
+                        <p className="text-center">Current bid</p>
+                        <h1 className="text-[32px] text-[#44413d] text-center leading-10 mb-4">
+                          <strong>$100</strong>
+                        </h1>
+                        <p className="text-center text-[#1B8840] mb-3 font-bold">You have won the auction</p>
+
+                        <button className="btn min-w-8 min-h-8 py-6 px-6 mb-2 rounded-b-sm bg-[#007acd] w-full text-[#fff] text-[16px] border-0 font-medium cursor-pointer">
+                          Place Bid
+                        </button>
+                        <p className="text-center">Reserve met</p>
+                        <div className="px-3 py-1.5 text-center text-[#007acd] cursor-pointer">20 bids so far - view history</div>
+                      </div>
                     ) : (
                       <>
                         {/* BUY NOW */}
@@ -642,7 +587,7 @@ function Listing() {
                         </div>
                         {/* STARTING PRICE */}
                         <div className="p-4">
-                          <div data-tour="currentBid">
+                          <div>
                             <p className="text-center">Starting Price</p>
                             <h1 className="text-[32px] text-[#44413d] text-center leading-10 mb-6">
                               <strong>${listing.start_price}</strong>
