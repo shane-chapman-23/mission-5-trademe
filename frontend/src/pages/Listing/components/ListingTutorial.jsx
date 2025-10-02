@@ -92,7 +92,7 @@ function ListingTutorial({ listing, onHighlightListingChange, onLeadBidChange, o
           <div className="flex items-center gap-2.5 mb-2.5">
             <img src={buyNow} />
             <p className="text-left">
-              <span className="text-[#4854D3] font-extrabold">Buy Now - </span>Skip the fight, claim it instantly
+              <span className="text-[#4854D3] font-extrabold">Buy Now - </span>Skip the fight, claim it instantly.
             </p>
           </div>
           <div className="flex items-center gap-2.5">
@@ -110,14 +110,14 @@ function ListingTutorial({ listing, onHighlightListingChange, onLeadBidChange, o
     {
       target: 'button[data-tour="bid"]',
       placement: "left",
-      content: "Click here to place a bid",
+      content: "Click here to place a bid.",
       showSkipButton: false,
       hideBackButton: true,
     },
     {
       target: 'div[data-tour="enterBid"]',
       placement: "left",
-      content: "Click here to place a bid",
+      content: "Enter your bid here.",
       showSkipButton: false,
       hideBackButton: true,
     },
