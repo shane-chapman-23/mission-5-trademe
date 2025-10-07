@@ -10,7 +10,7 @@ It includes two new features on top of a standard marketplace site:
 
 ## Tech Stack
 
-- **Frontend**: React (Vite, TailwindCSS)
+- **Frontend**: React (Vite, TailwindCSS, Joyride)
 - **Backend**: Node.js, Express, MongoDB, dotenv
 - **Dev Tools**: Concurrently (to run frontend & backend together)
 
