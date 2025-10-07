@@ -1,5 +1,6 @@
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import axios from "axios";
 import ListingTutorial from "./components/ListingTutorial";
 import BidModal from "./components/BidModal";
 import ImageCarousel from "./components/ImageCarousel";
@@ -11,9 +12,8 @@ import ping from "../../assets/icons/ping.svg";
 import share from "../../assets/icons/share.svg";
 
 function Listing() {
-  const { state } = useLocation(); // Router state (contains listing if navigated from Marketplace)
-  const [listing] = useState(state?.listing);
-  console.log(state);
+  const { id } = useParams(); // Get listing ID from URL params
+  const [listing, setListing] = useState("");
 
   // Place Bid Modal
   const [showBidModal, setShowBidModal] = useState(false);
@@ -21,9 +21,25 @@ function Listing() {
   const [leadBid, setLeadBid] = useState(false);
 
   // Coachmark variables
-  const [highlightListing, setHighlightListing] = useState(false); // added
+  const [highlightListing, setHighlightListing] = useState(false);
 
-  // Add this useEffect to manage body scrolling
+  // Fetch listing data
+  useEffect(() => {
+    const fetchListing = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/listings/${id}`);
+        setListing(response.data);
+      } catch (err) {
+        console.error("Error fetching listing:", err);
+      }
+    };
+
+    if (id) {
+      fetchListing();
+    }
+  }, [id]);
+
+  // Manage body scrolling
   useEffect(() => {
     // If any modal is open, disable scrolling on the body
     if (showBidModal) {
@@ -73,7 +89,7 @@ function Listing() {
                   {/* DESCRIPTION */}
                   <div className={`flex mb-6 ${highlightListing ? "bg-[#007ACD] text-white rounded-md p-3" : ""}`}>
                     <h4 className="w-[25%] mb-4 text-[#44413d] text-lg font-medium">Description</h4>
-                    <p className="w-[75%] mb-4 ">{listing.description.replace(/\n/g, "<br />") || "No description provided."}</p>
+                    <p className="w-[75%] mb-4 ">{listing.description ? listing.description.replace(/\n/g, "<br />") : "No description provided."}</p>
                   </div>
                   {/* SHIPPING & pick-up options */}
                   <div className="flex  mb-6">

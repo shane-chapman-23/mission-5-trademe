@@ -106,7 +106,7 @@ export default function ListingCard({listing, onAddToComparison}) {
   const navigate = useNavigate();
 
   const openListing = () => {
-    navigate(`/listing/${listing._id}`, {state: {listing}});
+    navigate(`/listing/${listing._id}`);
   };
 
   return (
