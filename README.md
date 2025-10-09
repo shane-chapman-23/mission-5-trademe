@@ -10,7 +10,7 @@ It includes two new features on top of a standard marketplace site:
 ## 🎥 Demo
 
 ## Comparison Feature
-[![Watch the demo](https://img.youtube.com/vi/pu8F8HqHipM/0.jpg)](https://youtu.be/pu8F8HqHipM)
+[Watch on YouTube](https://youtu.be/pu8F8HqHipM)
 ---
 ## 🚀 Tech Stack
 
