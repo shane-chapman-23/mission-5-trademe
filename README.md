@@ -10,7 +10,8 @@ It includes two new features on top of a standard marketplace site:
 ## 🎥 Demo
 
 ## Comparison Feature
-[Watch on YouTube](https://youtu.be/pu8F8HqHipM)
+
+## Bidding Tutorial
 ---
 ## 🚀 Tech Stack
 
