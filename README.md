@@ -1,4 +1,4 @@
-chap# Mock TradeMe Website
+Mock TradeMe Website
 
 This project is a **mock TradeMe clone** built as part of a mission-ready coding challenge.  
 It includes two new features on top of a standard marketplace site:
@@ -9,6 +9,8 @@ It includes two new features on top of a standard marketplace site:
 ---
 ## 🎥 Demo
 
+## Comparison Feature
+[![Watch the demo](https://img.youtube.com/vi/pu8F8HqHipM/0.jpg)](https://youtu.be/pu8F8HqHipM)
 ---
 ## 🚀 Tech Stack
 
