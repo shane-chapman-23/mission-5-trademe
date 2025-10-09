@@ -24,7 +24,7 @@ Clone the repo:
 
 ```bash
 git clone https://github.com/shane-chapman-23/mission-5-trademe.git
-cd mission-1
+cd mission-5-trademe
 ```
 
 ### Install dependencies
