@@ -7,52 +7,46 @@ It includes two new features on top of a standard marketplace site:
 - **Bidding Tutorial** – a guided explanation of how the bidding system works.
 
 ---
-
-## Tech Stack
-
-- **Frontend**: React (Vite, TailwindCSS, Joyride)
-- **Backend**: Node.js, Express, MongoDB, dotenv
-- **Dev Tools**: Concurrently (to run frontend & backend together)
+## 🎥 Demo
 
 ---
+## 🚀 Tech Stack
 
-## Installation
+- **Frontend:** React (Vite, Tailwind CSS, React Joyride, Axios)  
+- **Backend:** Node.js (Express, Dotenv, CORS)  
+- **Database:** MongoDB (Mongoose)  
+- **Dev Tools:** Concurrently (runs frontend & backend simultaneously)
 
-1.  **Clone the repository**
+---
+## ⚙️ Setup & Installation
 
-    ```bash
-    git clone https://github.com/shane-chapman-23/mission-5-trademe
-    cd <repo-folder>
+Clone the repo:
 
-    ```
+```bash
+git clone https://github.com/your-username/mission-1.git
+cd mission-1
+```
 
-2.  **Install root dependencies**
+### Install dependencies
 
-    ```bash
+You’ll need to install dependencies in three places:
 
-    npm install
+```bash
+# Root dependencies (concurrently)
+npm install
 
-    ```
+# Frontend dependencies
+cd frontend
+npm install
 
-3.  **Install frontend dependencies**
+# Backend dependencies
+cd ../backend
+npm install
+```
 
-    ```bash
-    cd frontend
-    npm install
-    cd ..
-    ```
+## Create a .env file
 
-4.  **Install backend dependencies**
-
-    ```bash
-    cd backend
-    npm install
-    cd ..
-    ```
-
-5.  **Create .env file**
-
-    please see the .env example
+Refer to the .env.example file for required variables
 
 ## Running the project
 
