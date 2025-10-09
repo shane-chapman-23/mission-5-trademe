@@ -1,4 +1,4 @@
-# Mock TradeMe Website
+chap# Mock TradeMe Website
 
 This project is a **mock TradeMe clone** built as part of a mission-ready coding challenge.  
 It includes two new features on top of a standard marketplace site:
@@ -23,7 +23,7 @@ It includes two new features on top of a standard marketplace site:
 Clone the repo:
 
 ```bash
-git clone https://github.com/your-username/mission-1.git
+git clone https://github.com/shane-chapman-23/mission-5-trademe.git
 cd mission-1
 ```
 
